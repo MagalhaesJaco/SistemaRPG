@@ -2,7 +2,9 @@ package org.example.informaçoesPersonagem;
 
 public enum Classe {
 
-    Guerreiro("Resistente",1);
+    Guerreiro("Forte e resistente",1),Mago("Bom em magia",4);
+
+
 
     private final String descricao;
     private  final Integer bonus;
@@ -18,5 +20,13 @@ public enum Classe {
 
     public Integer getBonus() {
         return bonus;
+    }
+
+    public Integer addBonus(Personagens personagens){
+        Integer statusMudado = 0;
+        if(personagens.getClasse() == Classe.Guerreiro){
+              statusMudado = personagens.getClasse().getBonus() + personagens.getStatus().getForca();
+        }
+        return statusMudado;
     }
 }

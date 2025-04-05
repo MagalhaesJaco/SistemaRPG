@@ -6,13 +6,15 @@ public class Personagens {
     private String raca;
     private String arma;
     private ListaDeHabilidades habilidades;
+    private Classe classe;
     private Status status;
 
-    public Personagens(String nome, String raca, ListaDeHabilidades habilidades, Status status){
+    public Personagens(String nome, String raca,Classe classe, ListaDeHabilidades habilidades, Status status){
         setNome(nome);
         setRaca(raca);
         setHabilidades(habilidades);
         setStatus(status);
+        setClasse(classe);
 
     }
 
@@ -28,8 +30,13 @@ public class Personagens {
     public Status getStatus() {
         return status;
     }
+    public Classe getClasse() {
+        return classe;
+    }
 
-
+    public void setClasse(Classe classe) {
+        this.classe = classe;
+    }
 
     public void setNome (String nome){
         this.nome = nome;

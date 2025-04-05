@@ -22,8 +22,8 @@ public class SistemaRPG {
         HabilidadeDoAdalberto.addHabilidade(bolaDeFogo);
 
         ListaJogadores ListaJogadores = new ListaJogadores();
-        Personagens Oswaldo = new Personagens("Oswaldo", "Humano", HabilidadeDoOswaldo, statusOswaldo);
-        Personagens Adalberto = new Personagens("Adalberto", "gnomo", HabilidadeDoAdalberto, statusAdalberto);
+        Personagens Oswaldo = new Personagens("Oswaldo", "Humano",Classe.Mago, HabilidadeDoOswaldo, statusOswaldo);
+        Personagens Adalberto = new Personagens("Adalberto", "gnomo",Classe.Guerreiro, HabilidadeDoAdalberto, statusAdalberto);
         ListaJogadores.addPersonagen(Oswaldo);
         ListaJogadores.addPersonagen(Adalberto);
 
@@ -44,8 +44,9 @@ public class SistemaRPG {
                     System.out.println("Você esta usando o: " + personagens.getNome());
                     System.out.println("# Ficha " + personagens.getNome() + " #");
                     System.out.println(personagens.getRaca());
+                    System.out.println("Classe: " + personagens.getClasse());
                     System.out.println("# Status #");
-                    System.out.println(" Força: " + statusOswaldo.getForca());
+                    System.out.println(" Força: " + personagens.getClasse().addBonus(personagens));
                     System.out.println(" Agilidade: " + statusOswaldo.getAgilidade());
                     System.out.println(" Vigor: " + statusOswaldo.getVigor());
                     System.out.println(" Intelecto: " + statusOswaldo.getIntelecto());
