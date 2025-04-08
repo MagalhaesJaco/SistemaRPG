@@ -56,7 +56,10 @@ public class SistemaRPG {
                     System.out.println(" Presença: " + (personagens.getStatus().getPresenca() + personagens.getClasse().getPresencaBonus() + personagens.getRaca().getPresencaBonus()));
                     System.out.println("# Habilidades #");
                     personagens.getHabilidades().getHabilidades().forEach(habilidade -> {
-                        System.out.println(habilidade.getNome());
+                        System.out.println("-------------------");
+                        System.out.println("Nome: " + habilidade.getNome());
+                        System.out.println("Dano: " + habilidade.getDano());
+                        System.out.println("-------------------");
                     });
                     int status = 0;
                     int dado = 0;

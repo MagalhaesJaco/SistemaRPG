@@ -15,6 +15,7 @@ public class Personagens {
         setHabilidades(habilidade);
         setStatus(status);
         setClasse(classe);
+        setItemDeUso(itemDeUso);
 
     }
 
@@ -53,5 +54,9 @@ public class Personagens {
     }
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setItemDeUso(ItemDeUso itemDeUso) {
+        this.itemDeUso = itemDeUso;
     }
 }
