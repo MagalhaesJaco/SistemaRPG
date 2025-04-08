@@ -1,21 +1,19 @@
 package org.example.informaçoesPersonagem;
 
-public enum Classe {
+public enum Raca {
 
-    Guerreiro("Forte e resistente",1,0,0,0,0),Mago("Bom em magia",4,0,0,0,0);
+    Gnomo("Bixu piqueno", 0,2,0,0,0),Humano("É apenas um humano... nada de mais...",2,0,0,0,0);
 
-
-
-    private final String descricao;
+    private final String descricao1;
     private final Integer forcaBonus;
     private final Integer agilidadeBonus;
     private final Integer vigorBonus;
     private final Integer presencaBonus;
     private final Integer intelectoBonus;
 
+    Raca(String descricao1, Integer forcaBonus,Integer agilidadeBonus,Integer vigorBonus,Integer presencaBonus,Integer intelectoBonus) {
 
-    Classe(String descricao, Integer forcaBonus,Integer agilidadeBonus,Integer vigorBonus,Integer presencaBonus,Integer intelectoBonus) {
-        this.descricao = descricao;
+        this.descricao1 = descricao1;
         this.forcaBonus = forcaBonus;
         this.agilidadeBonus = agilidadeBonus;
         this.vigorBonus = vigorBonus;
@@ -24,9 +22,8 @@ public enum Classe {
     }
 
     public String getDescricao() {
-        return descricao;
+        return descricao1;
     }
-
     public Integer getForcaBonus() {
         return forcaBonus;
     }
@@ -47,3 +44,4 @@ public enum Classe {
         return vigorBonus;
     }
 }
+

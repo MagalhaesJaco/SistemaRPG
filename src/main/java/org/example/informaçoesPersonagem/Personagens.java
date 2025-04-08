@@ -3,16 +3,16 @@ package org.example.informaçoesPersonagem;
 public class Personagens {
 
     private String nome;
-    private String raca;
-    private String arma;
-    private ListaDeHabilidades habilidades;
+    private Raca raca;
+    private ItemDeUso itemDeUso;
+    private  ListaHabilidades habilidade;
     private Classe classe;
     private Status status;
 
-    public Personagens(String nome, String raca,Classe classe, ListaDeHabilidades habilidades, Status status){
+    public Personagens(String nome,ItemDeUso itemDeUso, Raca raca ,Classe classe,ListaHabilidades habilidade, Status status){
         setNome(nome);
         setRaca(raca);
-        setHabilidades(habilidades);
+        setHabilidades(habilidade);
         setStatus(status);
         setClasse(classe);
 
@@ -21,11 +21,8 @@ public class Personagens {
     public String getNome() {
         return nome;
     }
-    public String getRaca() {
-        return "Raça: " + raca;
-    }
-    public ListaDeHabilidades getHabilidades(){
-        return habilidades;
+    public ListaHabilidades getHabilidades(){
+        return habilidade;
     }
     public Status getStatus() {
         return status;
@@ -33,6 +30,13 @@ public class Personagens {
     public Classe getClasse() {
         return classe;
     }
+    public Raca getRaca (){
+        return raca;
+    }
+    public ItemDeUso getItemDeUso(){
+        return itemDeUso;
+    }
+
 
     public void setClasse(Classe classe) {
         this.classe = classe;
@@ -41,11 +45,11 @@ public class Personagens {
     public void setNome (String nome){
         this.nome = nome;
     }
-    public void setRaca (String raca){
+    public void setRaca (Raca raca){
         this.raca = raca;
     }
-    public void setHabilidades(ListaDeHabilidades habilidades) {
-        this.habilidades = habilidades;
+    public void setHabilidades(ListaHabilidades habilidades) {
+        this.habilidade = habilidades;
     }
     public void setStatus(Status status) {
         this.status = status;

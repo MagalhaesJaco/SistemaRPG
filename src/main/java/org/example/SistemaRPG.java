@@ -12,18 +12,20 @@ public class SistemaRPG {
     public static void main(String[] args) {
         Dados dados = new Dados();
         Scanner scanner = new Scanner(System.in);
-        ListaDeHabilidades HabilidadeDoOswaldo = new ListaDeHabilidades();
-        ListaDeHabilidades HabilidadeDoAdalberto = new ListaDeHabilidades();
+
         Status statusOswaldo = new Status(3, 3, 5, 7, 8);
         Status statusAdalberto = new Status(2, 2, 10, 5, 10);
-        Habilidade bolaDeFogo = new Habilidade("Bola de fogo", 10);
 
-        HabilidadeDoOswaldo.addHabilidade(bolaDeFogo);
-        HabilidadeDoAdalberto.addHabilidade(bolaDeFogo);
+        ListaHabilidades HabilidadesOswaldo = new ListaHabilidades();
+        ListaHabilidades HabilidadeAdalberto = new ListaHabilidades();
 
+        HabilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
+        HabilidadeAdalberto.addHabilidade(Habilidade.BolaDeFogo);
         ListaJogadores ListaJogadores = new ListaJogadores();
-        Personagens Oswaldo = new Personagens("Oswaldo", "Humano",Classe.Mago, HabilidadeDoOswaldo, statusOswaldo);
-        Personagens Adalberto = new Personagens("Adalberto", "gnomo",Classe.Guerreiro, HabilidadeDoAdalberto, statusAdalberto);
+
+        Personagens Oswaldo = new Personagens("Oswaldo",ItemDeUso.EspadaDeMadeira,Raca.Humano,Classe.Mago,HabilidadesOswaldo, statusOswaldo);
+        Personagens Adalberto = new Personagens("Adalberto",ItemDeUso.EspadaDeMadeira,Raca.Gnomo,Classe.Guerreiro,HabilidadesOswaldo, statusAdalberto);
+
         ListaJogadores.addPersonagen(Oswaldo);
         ListaJogadores.addPersonagen(Adalberto);
 
@@ -43,20 +45,18 @@ public class SistemaRPG {
                 if (personagens.getNome().contains(InputUsuario)) {
                     System.out.println("Você esta usando o: " + personagens.getNome());
                     System.out.println("# Ficha " + personagens.getNome() + " #");
-                    System.out.println(personagens.getRaca());
+                    System.out.println("Raça: " + personagens.getRaca());
+                    System.out.println("Esta usando: " + personagens.getItemDeUso().getNome());
                     System.out.println("Classe: " + personagens.getClasse());
                     System.out.println("# Status #");
-                    System.out.println(" Força: " + personagens.getClasse().addBonus(personagens));
-                    System.out.println(" Agilidade: " + statusOswaldo.getAgilidade());
-                    System.out.println(" Vigor: " + statusOswaldo.getVigor());
-                    System.out.println(" Intelecto: " + statusOswaldo.getIntelecto());
-                    System.out.println(" Presença: " + statusOswaldo.getPresenca());
+                    System.out.println(" Força: " + (personagens.getStatus().getForca() + personagens.getClasse().getForcaBonus() + personagens.getRaca().getForcaBonus()));
+                    System.out.println(" Agilidade: " + (personagens.getStatus().getAgilidade() + personagens.getClasse().getAgilidadeBonus() + personagens.getRaca().getAgilidadeBonus()));
+                    System.out.println(" Vigor: " + (personagens.getStatus().getVigor() + personagens.getClasse().getVigorBonus() + personagens.getRaca().getVigorBonus()));
+                    System.out.println(" Intelecto: " + (personagens.getStatus().getIntelecto() + personagens.getClasse().getIntelectoBonus() + personagens.getRaca().getIntelectoBonus()));
+                    System.out.println(" Presença: " + (personagens.getStatus().getPresenca() + personagens.getClasse().getPresencaBonus() + personagens.getRaca().getPresencaBonus()));
                     System.out.println("# Habilidades #");
-                    personagens.getHabilidades().getHabiidade().forEach(habilidade -> {
-                        System.out.println("-------------------");
-                        System.out.println("Nome: " + habilidade.getNome());
-                        System.out.println("Dano: " + habilidade.getDano());
-                        System.out.println("-------------------");
+                    personagens.getHabilidades().getHabilidades().forEach(habilidade -> {
+                        System.out.println(habilidade.getNome());
                     });
                     int status = 0;
                     int dado = 0;
