@@ -13,22 +13,24 @@ public class SistemaRPG {
         Dados dados = new Dados();
         Scanner scanner = new Scanner(System.in);
 
-        Status statusOswaldo = new Status(3, 3, 5, 7, 8);
-        Status statusAdalberto = new Status(2, 2, 10, 5, 10);
+        Status statusOswaldo = new Status(2, 3, 4, 2, 2);
+        Status statusAdalberto = new Status(2, 4, 6, 8, 9);
+
 
         ListaHabilidades HabilidadesOswaldo = new ListaHabilidades();
         ListaHabilidades HabilidadeAdalberto = new ListaHabilidades();
 
         HabilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
+
         HabilidadeAdalberto.addHabilidade(Habilidade.BolaDeFogo);
         ListaJogadores ListaJogadores = new ListaJogadores();
 
-        Personagens Oswaldo = new Personagens("Oswaldo",ItemDeUso.EspadaDeMadeira,Raca.Humano,Classe.Mago,HabilidadesOswaldo, statusOswaldo);
-        Personagens Adalberto = new Personagens("Adalberto",ItemDeUso.EspadaDeMadeira,Raca.Gnomo,Classe.Guerreiro,HabilidadesOswaldo, statusAdalberto);
+        Personagens Oswaldo = new Personagens("Oswaldo", ItemDeUso.EspadaDeMadeira, Raca.Humano, Classe.Mago, HabilidadesOswaldo, statusOswaldo);
+
+        Personagens Adalberto = new Personagens("Adalberto", ItemDeUso.EspadaDeMadeira, Raca.Gnomo, Classe.Guerreiro, HabilidadesOswaldo, statusAdalberto);
 
         ListaJogadores.addPersonagen(Oswaldo);
         ListaJogadores.addPersonagen(Adalberto);
-
         System.out.println("Chat Geral !");
         System.out.println("Para rola atributos siga a lista a baixo:\n" +
                 "1 = Força\n" +
@@ -41,12 +43,17 @@ public class SistemaRPG {
         System.out.println("Qual personagem vai ser usado?");
         while (true) {
             String InputUsuario = scanner.nextLine();
-            ListaJogadores.getPersonagens().forEach(personagens -> {
+            boolean personagemEncontrado = false;
+
+            for (Personagens personagens : ListaJogadores.getPersonagens()) {
                 if (personagens.getNome().contains(InputUsuario)) {
-                    System.out.println("Você esta usando o: " + personagens.getNome());
+                    personagemEncontrado = true;
+
+                    System.out.println("Você está usando o: " + personagens.getNome());
+                    System.out.println("Vida: " + personagens.calculoVidaMax());
                     System.out.println("# Ficha " + personagens.getNome() + " #");
                     System.out.println("Raça: " + personagens.getRaca());
-                    System.out.println("Esta usando: " + personagens.getItemDeUso().getNome());
+                    System.out.println("Está usando: " + personagens.getItemDeUso().getNome());
                     System.out.println("Classe: " + personagens.getClasse());
                     System.out.println("# Status #");
                     System.out.println(" Força: " + (personagens.getStatus().getForca() + personagens.getClasse().getForcaBonus() + personagens.getRaca().getForcaBonus()));
@@ -61,14 +68,16 @@ public class SistemaRPG {
                         System.out.println("Dano: " + habilidade.getDano());
                         System.out.println("-------------------");
                     });
+
                     int status = 0;
                     int dado = 0;
-                    int valores =0;
+                    int valores = 0;
+
                     while (true) {
                         String obsInputUsuario = scanner.nextLine();
                         switch (obsInputUsuario) {
                             case "d20":
-                                System.out.println("Rolou: " + (dado = dados.getD20()) + " + " + (valores = status) + " = " + (dado + valores) );
+                                System.out.println("Rolou: " + (dado = dados.getD20()) + " + " + (valores = status) + " = " + (dado + valores));
                                 break;
                             case "d12":
                                 System.out.println("Rolou: " + dados.getD12());
@@ -95,7 +104,7 @@ public class SistemaRPG {
                                 break;
                             case "3":
                                 status = personagens.getStatus().getIntelecto();
-                                System.out.println("Intelect selecionada!");
+                                System.out.println("Intelecto selecionado!");
                                 break;
                             case "4":
                                 status = personagens.getStatus().getPresenca();
@@ -103,19 +112,20 @@ public class SistemaRPG {
                                 break;
                             case "5":
                                 status = personagens.getStatus().getVigor();
-                                System.out.println("Vigor selecionada!");
+                                System.out.println("Vigor selecionado!");
                                 break;
                             case "0":
                                 status = 0;
-                                System.out.println("Dado base selecionada!");
+                                System.out.println("Dado base selecionado!");
                                 break;
                         }
                     }
-                } else {
-                    System.out.println("Selecione um personagem!");
                 }
-            });
-        }
+            }
+
+            if (!personagemEncontrado) {
+                System.out.println("Selecione um personagem!");
+            }
         }
     }
-
+}

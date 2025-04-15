@@ -1,18 +1,39 @@
 package org.example.informaçoesPersonagem;
 
 public class Status {
-    private Integer forca;
-    private Integer agilidade;
-    private Integer vigor;
-    private Integer Intelecto;
-    private Integer presenca;
+    private Personagens personagens;
+    private int forca;
+    private int agilidade;
+    private int vigor;
+    private int intelecto;
+    private int presenca;
+    private int statusTotal;
 
-    public Status (Integer forca,Integer agilidade,Integer vigor,Integer Intelecto,Integer presenca){
+
+
+    public Status (int forca,Integer agilidade,Integer vigor,Integer intelecto,Integer presenca){
         setForca(forca);
         setAgilidade(agilidade);
         setVigor(vigor);
-        setIntelecto(Intelecto);
+        setIntelecto(intelecto);
         setPresenca(presenca);
+    }
+
+    public boolean podeAtribuir (Integer valor){
+        return valor <= getStatusRestantes();
+    }
+
+    public int getStatusRestantes(){
+        int usado = somaAtributos();
+        return statusTotal - usado;
+    }
+
+    private Integer somaAtributos (){
+        return soma(forca) + soma(agilidade) + soma(vigor) + soma(intelecto) + soma(presenca);
+     }
+
+    private int soma(Integer valor){
+        return valor != null ? valor : 0;
     }
 
     public Integer getForca() {
@@ -20,7 +41,7 @@ public class Status {
     }
 
     public Integer getIntelecto() {
-        return Intelecto;
+        return intelecto;
     }
 
     public Integer getPresenca() {
@@ -35,24 +56,48 @@ public class Status {
         return agilidade;
     }
 
-    public void setAgilidade(Integer agilidade) {
-        this.agilidade = agilidade;
+    public Integer getStatusTotal() {
+        return statusTotal;
     }
 
-    public void setForca(Integer forca) {
-        this.forca = forca;
+    public Personagens getPersonagens() {
+        return personagens;
+    }
+
+    public void setStatusTotal(Integer statusTotal) {
+        this.statusTotal = statusTotal;
+    }
+
+    public void setAgilidade(Integer agilidade) {
+        if(podeAtribuir(agilidade)){
+            this.agilidade = agilidade;
+        }
+    }
+
+    public void setForca(int forca) {
+        if(podeAtribuir(forca)){
+            this.forca = forca;
+        }
     }
 
     public void setIntelecto(Integer intelecto) {
-        Intelecto = intelecto;
+        if(podeAtribuir(intelecto)){
+            this.intelecto = intelecto;
+        }
     }
 
     public void setPresenca(Integer presenca) {
-        this.presenca = presenca;
+        if(podeAtribuir(presenca)) {
+            this.presenca = presenca;
+        }
     }
 
     public void setVigor(Integer vigor) {
-        this.vigor = vigor;
+        if(podeAtribuir(vigor)) {
+            this.vigor = vigor;
+        }
     }
+//
+
 }
 
