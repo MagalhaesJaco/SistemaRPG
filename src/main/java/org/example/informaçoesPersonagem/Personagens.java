@@ -4,7 +4,6 @@ import org.example.model.Calculos;
 import org.example.model.Dados;
 
 public class Personagens implements Calculos {
-    private Integer nivel;
     private String nome;
     private Raca raca;
     private ItemDeUso itemDeUso;
@@ -15,7 +14,6 @@ public class Personagens implements Calculos {
 
     public Personagens( String nome, ItemDeUso itemDeUso, Raca raca, Classe classe, ListaHabilidades habilidade, Status status) {
         setStatus(status);
-        setNivel(2);
         setNome(nome);
         setRaca(raca);
         setHabilidades(habilidade);
@@ -25,18 +23,6 @@ public class Personagens implements Calculos {
     }
     Dados random = new Dados();
 
-
-    public Integer calculoVidaMax(){
-        int vigor =  getStatus().getVigor() != null ? getStatus().getVigor() : 0;
-
-        Integer vidaMax = 0;
-        if(classe == Classe.Mago){
-            if(getNivel() == 1){
-                vidaMax = vigor + 6;
-            }
-        }
-        return  vidaMax;
-    }
 
     public String getNome() {
         return nome;
@@ -63,16 +49,17 @@ public class Personagens implements Calculos {
         return itemDeUso;
     }
 
-    public Integer getNivel() {
-        return nivel;
-    }
+    public Integer calculoVidaMax(){
+        int vigor = getStatus().getVigor() != null ? getStatus().getVigor() : 0;
 
-    public void setNivel(Integer nivel) {
-            this.nivel = nivel;
-            getStatus().setStatusTotal(9+ ((nivel - 1) * 2));
+        Integer vidaMax = 0;
+        if(classe == Classe.Mago){
+            if(getStatus().getNivel() == 1){
+                vidaMax = vigor + 6;
+            }
         }
-
-
+        return  vidaMax;
+    }
     public void setClasse(Classe classe) {
         this.classe = classe;
     }

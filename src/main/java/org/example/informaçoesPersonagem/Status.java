@@ -1,7 +1,7 @@
 package org.example.informaçoesPersonagem;
 
 public class Status {
-    private Personagens personagens;
+    private Integer nivel;
     private int forca;
     private int agilidade;
     private int vigor;
@@ -10,8 +10,8 @@ public class Status {
     private int statusTotal;
 
 
-
-    public Status (int forca,Integer agilidade,Integer vigor,Integer intelecto,Integer presenca){
+    public Status(Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca) {
+        setNivel(nivel);
         setForca(forca);
         setAgilidade(agilidade);
         setVigor(vigor);
@@ -19,21 +19,8 @@ public class Status {
         setPresenca(presenca);
     }
 
-    public boolean podeAtribuir (Integer valor){
+    public boolean podeAtribuir(Integer valor) {
         return valor <= getStatusRestantes();
-    }
-
-    public int getStatusRestantes(){
-        int usado = somaAtributos();
-        return statusTotal - usado;
-    }
-
-    private Integer somaAtributos (){
-        return soma(forca) + soma(agilidade) + soma(vigor) + soma(intelecto) + soma(presenca);
-     }
-
-    private int soma(Integer valor){
-        return valor != null ? valor : 0;
     }
 
     public Integer getForca() {
@@ -56,48 +43,62 @@ public class Status {
         return agilidade;
     }
 
-    public Integer getStatusTotal() {
-        return statusTotal;
-    }
-
-    public Personagens getPersonagens() {
-        return personagens;
-    }
-
-    public void setStatusTotal(Integer statusTotal) {
-        this.statusTotal = statusTotal;
+    public Integer getNivel() {
+        return nivel;
     }
 
     public void setAgilidade(Integer agilidade) {
-        if(podeAtribuir(agilidade)){
+        if (podeAtribuir(agilidade)) {
             this.agilidade = agilidade;
         }
     }
 
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+        if (nivel != 0) {
+            atualizarStatusPorNivel(nivel);
+        }
+    }
+
     public void setForca(int forca) {
-        if(podeAtribuir(forca)){
+        if (podeAtribuir(forca)) {
             this.forca = forca;
         }
     }
 
     public void setIntelecto(Integer intelecto) {
-        if(podeAtribuir(intelecto)){
+        if (podeAtribuir(intelecto)) {
             this.intelecto = intelecto;
         }
     }
 
     public void setPresenca(Integer presenca) {
-        if(podeAtribuir(presenca)) {
+        if (podeAtribuir(presenca)) {
             this.presenca = presenca;
         }
     }
 
     public void setVigor(Integer vigor) {
-        if(podeAtribuir(vigor)) {
+        if (podeAtribuir(vigor)) {
             this.vigor = vigor;
         }
     }
-//
 
+    public void setStatusTotal(int statusTotal) {
+        this.statusTotal = statusTotal;
+    }
+
+    public void atualizarStatusPorNivel(int nivel) {
+        this.statusTotal = 9 + ((nivel - 1) * 2);
+    }
+
+    public Integer getStatusTotal() {
+        return statusTotal;
+    }
+
+    public int getStatusRestantes() {
+        int usados = forca + agilidade + intelecto + vigor;
+        return statusTotal - usados;
+    }
 }
 
