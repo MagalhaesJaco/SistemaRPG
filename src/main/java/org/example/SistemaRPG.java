@@ -13,8 +13,8 @@ public class SistemaRPG {
         Dados dados = new Dados();
         Scanner scanner = new Scanner(System.in);
 
-        Status statusOswaldo = new Status(2, 3, 4, 2, 2);
-        Status statusAdalberto = new Status(2, 4, 6, 8, 9);
+        Status statusOswaldo = new Status(3,2, 3, 4, 2, 2);
+        Status statusAdalberto = new Status(1,2, 4, 6, 8, 9);
 
 
         ListaHabilidades HabilidadesOswaldo = new ListaHabilidades();
@@ -23,6 +23,7 @@ public class SistemaRPG {
         HabilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
 
         HabilidadeAdalberto.addHabilidade(Habilidade.BolaDeFogo);
+
         ListaJogadores ListaJogadores = new ListaJogadores();
 
         Personagens Oswaldo = new Personagens("Oswaldo", ItemDeUso.EspadaDeMadeira, Raca.Humano, Classe.Mago, HabilidadesOswaldo, statusOswaldo);
