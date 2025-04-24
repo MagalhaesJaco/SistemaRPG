@@ -11,6 +11,7 @@ public class Status {
 
 
     public Status(Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca) {
+
         setNivel(nivel);
         setForca(forca);
         setAgilidade(agilidade);

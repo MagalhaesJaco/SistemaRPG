@@ -13,8 +13,8 @@ public class SistemaRPG {
         Dados dados = new Dados();
         Scanner scanner = new Scanner(System.in);
 
-        Status statusOswaldo = new Status(3,2, 3, 4, 2, 2);
-        Status statusAdalberto = new Status(1,2, 4, 6, 8, 9);
+        Status statusOswaldo = new Status(20,2, 3, 4, 2, 2);
+        Status statusAdalberto = new Status(5,2, 4, 6, 8, 9);
 
 
         ListaHabilidades HabilidadesOswaldo = new ListaHabilidades();
@@ -49,7 +49,7 @@ public class SistemaRPG {
             for (Personagens personagens : ListaJogadores.getPersonagens()) {
                 if (personagens.getNome().contains(InputUsuario)) {
                     personagemEncontrado = true;
-
+                    personagens.atualizarVidaPorNivel();
                     System.out.println("Você está usando o: " + personagens.getNome());
                     System.out.println("Vida: " + personagens.calculoVidaMax());
                     System.out.println("# Ficha " + personagens.getNome() + " #");

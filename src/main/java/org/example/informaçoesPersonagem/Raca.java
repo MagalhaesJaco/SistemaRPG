@@ -2,14 +2,14 @@ package org.example.informaçoesPersonagem;
 
 public enum Raca {
 
-    Gnomo("Bixu piqueno", 0,2,0,0,0),
-    Humano("É apenas um humano... nada de mais...",2,0,0,0,0),
-    Elfo("Ágil e com sentidos aguçados", 0, 3, 0, 1, 1),
-    Anão("Baixo, parrudo e teimoso", 2, 0, 3, 0, 0),
-    Orc("Forte, feroz e impulsivo", 4, 0, 1, 0, 0),
-    Tiefling("Ser de sangue demoníaco, com forte presença e intelecto", 0, 0, 0, 2, 3),
-    MeioDragao("Sangue dracônico corre em suas veias", 3, 1, 2, 0, 1),
-    Sereiano("Habitante das águas, astuto e carismático", 0, 2, 0, 3, 1);
+    Gnomo("Bixu piqueno", 0,1,0,0,1),
+    Humano("É apenas um humano... nada de mais...",0,0,1,1,0),
+    Elfo("Ágil e com sentidos aguçados", 0, 2, 0, 1, 0),
+    Anão("Baixo, parrudo e teimoso", 1, 0, 1, 0, 0),
+    Orc("Forte, feroz e impulsivo", 2, 0, 0, 0, 0),
+    Tiefling("Ser de sangue demoníaco, com forte presença e intelecto", 0, 0, 0, 2, 0),
+    MeioDragao("Sangue dracônico corre em suas veias", 0, 1, 0, 1, 0),
+    Sereiano("Habitante das águas, astuto e carismático", 0, 0, 0, 1, 1);
     private final String descricao1;
     private final Integer forcaBonus;
     private final Integer agilidadeBonus;
