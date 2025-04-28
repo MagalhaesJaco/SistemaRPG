@@ -6,7 +6,7 @@ import org.example.model.Dados;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Personagens implements Calculos {
+public class Personagens extends Status implements Calculos  {
     private String nome;
     private Raca raca;
     private ItemDeUso itemDeUso;
@@ -17,13 +17,21 @@ public class Personagens implements Calculos {
     private final List<Integer> vidaPorNivel = new ArrayList<>();
 
 
-    public Personagens(String nome, ItemDeUso itemDeUso, Raca raca, Classe classe, ListaHabilidades habilidade, Status status) {
-        setStatus(status);
+    public Personagens(){};
+    public Personagens(Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca, String nome, ItemDeUso itemDeUso, Raca raca, Classe classe, ListaHabilidades habilidade) {
         setNome(nome);
         setRaca(raca);
         setHabilidades(habilidade);
         setClasse(classe);
         setItemDeUso(itemDeUso);
+        setNivel(nivel);
+
+        setForca(forca);
+        setAgilidade(agilidade);
+        setVigor(vigor);
+        setIntelecto(intelecto);
+        setPresenca(presenca);
+
     }
 
     Dados random = new Dados();
@@ -35,10 +43,6 @@ public class Personagens implements Calculos {
 
     public ListaHabilidades getHabilidades() {
         return habilidade;
-    }
-
-    public Status getStatus() {
-        return status;
     }
 
     public Classe getClasse() {
@@ -80,7 +84,7 @@ public class Personagens implements Calculos {
     }
 
     public Integer calculoVidaMax() {
-        int vigor = getStatus().getVigor() != null ? getStatus().getVigor() : 0;
+        int vigor = getVigor() != null ? getVigor() : 0;
         int vidaAdicional = vidaPorNivel.stream().mapToInt(Integer::intValue).sum();
         int bonusClasse = getClasse().getVigorBonus();
         int bonusRaca = getRaca().getVigorBonus();
@@ -107,7 +111,7 @@ public class Personagens implements Calculos {
     }
 
     public void atualizarVidaPorNivel() {
-        int nivel = getStatus().getNivel() != null ? getStatus().getNivel() : 1;
+        int nivel = getNivel() != null ? getNivel() : 1;
         switch (classe) {
             case Mago, Feiticeiro -> {
                 while (vidaPorNivel.size() < (nivel - 1)) {
@@ -128,6 +132,21 @@ public class Personagens implements Calculos {
                 vidaPorNivel.add(random.getD12());
             }}
         }
+    }
+
+    public void verFicha(Personagens personagens){
+        System.out.println("Você está usando o: " + personagens.getNome() + "\n");
+        System.out.println("# Ficha " + personagens.getNome() + " #");
+        System.out.println(" Vida: " + personagens.calculoVidaMax());
+        System.out.println(" Raça: " + personagens.getRaca());
+        System.out.println(" Está usando: " + personagens.getItemDeUso().getNome());
+        System.out.println(" Classe: " + personagens.getClasse());
+        System.out.println("# Status #");
+        System.out.println(" Força: " + (personagens.getForca() + personagens.getClasse().getForcaBonus() + personagens.getRaca().getForcaBonus()));
+        System.out.println(" Agilidade: " + (personagens.getAgilidade() + personagens.getClasse().getAgilidadeBonus() + personagens.getRaca().getAgilidadeBonus()));
+        System.out.println(" Vigor: " + (personagens.getVigor() + personagens.getClasse().getVigorBonus() + personagens.getRaca().getVigorBonus()));
+        System.out.println(" Intelecto: " + (personagens.getIntelecto() + personagens.getClasse().getIntelectoBonus() + personagens.getRaca().getIntelectoBonus()));
+        System.out.println(" Presença: " + (personagens.getPresenca() + personagens.getClasse().getPresencaBonus() + personagens.getRaca().getPresencaBonus()));
     }
 }
 

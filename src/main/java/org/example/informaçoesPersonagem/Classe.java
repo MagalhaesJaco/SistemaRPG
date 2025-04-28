@@ -4,6 +4,8 @@ import org.example.model.Calculos;
 
 public enum Classe {
 
+    // Dfinição de classes!//
+
     Guerreiro("Forte e resistente",0,0,0,0,0),
     Mago("Bom em magia",4,0,0,0,0),
     Ladino("Ágil e furtivo", 0, 3, 0, 2, 0),
@@ -14,7 +16,7 @@ public enum Classe {
     Feiticeiro("Mestre das artes arcanas, de intelecto elevado", 0, 0, 0, 1, 4);
 
 
-
+    // Definição de atributos ! //
     private final String descricao;
     private final Integer forcaBonus;
     private final Integer agilidadeBonus;

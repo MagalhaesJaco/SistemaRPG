@@ -1,5 +1,6 @@
 package org.example.informaçoesPersonagem;
 
+
 public enum Raca {
 
     Gnomo("Bixu piqueno", 0,1,0,0,1),
