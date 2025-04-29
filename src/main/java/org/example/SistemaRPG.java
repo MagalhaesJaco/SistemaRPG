@@ -1,8 +1,6 @@
 package org.example;
-import org.example.informaçoesPersonagem.*;
+import org.example.informacoesPersonagem.*;
 
-import java.util.List;
-import java.util.Arrays;
 import java.util.Scanner;
 import org.example.model.Dados;
 
@@ -22,9 +20,23 @@ public class SistemaRPG {
 
         ListaJogadores ListaJogadores = new ListaJogadores();
 
-        Personagens Oswaldo = new Personagens(1,3,1,3,1,1,"Oswaldo", ItemDeUso.EspadaDeMadeira, Raca.Humano, Classe.Mago, HabilidadesOswaldo);
+        Personagem Oswaldo = new Personagem(
+                1,3,1,3,1,1,
+                "Oswaldo",
+                ItemDeUso.EspadaDeMadeira,
+                Raca.Humano,
+                Classe.Mago,
+                HabilidadesOswaldo
+        );
 
-        Personagens Adalberto = new Personagens(1,2,2,2,1,2,"Adalberto", ItemDeUso.EspadaDeMadeira, Raca.Gnomo, Classe.Guerreiro, HabilidadesOswaldo);
+        Personagem Adalberto = new Personagem(
+                1,2,2,2,1,2,
+                "Adalberto",
+                ItemDeUso.EspadaDeMadeira,
+                Raca.Gnomo,
+                Classe.Guerreiro,
+                HabilidadesOswaldo
+        );
 
         ListaJogadores.addPersonagen(Oswaldo);
         ListaJogadores.addPersonagen(Adalberto);
@@ -42,13 +54,13 @@ public class SistemaRPG {
             String InputUsuario = scanner.nextLine();
             boolean personagemEncontrado = false;
 
-            for (Personagens personagens : ListaJogadores.getPersonagens()) {
-                if (personagens.getNome().contains(InputUsuario)) {
+            for (Personagem personagem : ListaJogadores.getPersonagens()) {
+                if (personagem.getNome().contains(InputUsuario)) {
                     personagemEncontrado = true;
-                    personagens.atualizarVidaPorNivel();
-                    personagens.verFicha(personagens);
+                    personagem.atualizarVidaPorNivel();
+                    personagem.verFicha(personagem);
                     System.out.println("# Habilidades #");
-                    personagens.getHabilidades().getHabilidades().forEach(habilidade -> {
+                    personagem.getHabilidades().getHabilidades().forEach(habilidade -> {
                         System.out.println("-------------------");
                         System.out.println("Nome: " + habilidade.getNome());
                         System.out.println("Dano: " + habilidade.getDano());
@@ -81,23 +93,23 @@ public class SistemaRPG {
                                 System.out.println("Rolou: " + dados.getD4());
                                 break;
                             case "1":
-                                status = personagens.getForca() + personagens.getClasse().getForcaBonus();
+                                status = personagem.getForca() + personagem.getClasse().getForcaBonus();
                                 System.out.println("Força selecionada!");
                                 break;
                             case "2":
-                                status = personagens.getAgilidade() + personagens.getClasse().getAgilidadeBonus();
+                                status = personagem.getAgilidade() + personagem.getClasse().getAgilidadeBonus();
                                 System.out.println("Agilidade selecionada!");
                                 break;
                             case "3":
-                                status = personagens.getIntelecto() + personagens.getClasse().getIntelectoBonus();
+                                status = personagem.getIntelecto() + personagem.getClasse().getIntelectoBonus();
                                 System.out.println("Intelecto selecionado!");
                                 break;
                             case "4":
-                                status = personagens.getPresenca() + personagens.getClasse().getPresencaBonus();
+                                status = personagem.getPresenca() + personagem.getClasse().getPresencaBonus();
                                 System.out.println("Presença selecionada!");
                                 break;
                             case "5":
-                                status = personagens.getVigor() + personagens.getClasse().getPresencaBonus();
+                                status = personagem.getVigor() + personagem.getClasse().getPresencaBonus();
                                 System.out.println("Vigor selecionado!");
                                 break;
                             case "0":

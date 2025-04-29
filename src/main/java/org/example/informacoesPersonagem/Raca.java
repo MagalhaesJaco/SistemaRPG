@@ -1,4 +1,4 @@
-package org.example.informaçoesPersonagem;
+package org.example.informacoesPersonagem;
 
 
 public enum Raca {
@@ -10,7 +10,17 @@ public enum Raca {
     Orc("Forte, feroz e impulsivo", 2, 0, 0, 0, 0),
     Tiefling("Ser de sangue demoníaco, com forte presença e intelecto", 0, 0, 0, 2, 0),
     MeioDragao("Sangue dracônico corre em suas veias", 0, 1, 0, 1, 0),
-    Sereiano("Habitante das águas, astuto e carismático", 0, 0, 0, 1, 1);
+    Sereiano("Habitante das águas, astuto e carismático", 0, 0, 0, 1, 1),
+    Fera("Criatura selvagem e instintiva", 2, 2, 2, 0, 0),
+    MortoVivo("Ser animado pela necromancia", 2, 0, 3, 1, 0),
+    Humanoide("Criatura similar aos humanos", 1, 2, 1, 1, 1),
+    Gigante("Ser colossal de grande força", 4, 0, 2, 0, 0),
+    Insetoide("Criatura artrópode ágil", 1, 3, 2, 0, 0),
+    Draconico("Descendente de dragões", 2, 1, 1, 1, 1),
+    Reptil("Criatura rastejante e venenosa", 2, 3, 1, 0, 0),
+    Construto("Criatura feita de matéria inanimada", 3, 0, 3, 0, 0),
+    Espirito("Ser etéreo de pura energia", 0, 2, 1, 2, 1);
+
     private final String descricao1;
     private final Integer forcaBonus;
     private final Integer agilidadeBonus;

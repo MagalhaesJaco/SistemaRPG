@@ -1,11 +1,14 @@
-package org.example.informaçoesPersonagem;
+package org.example.informacoesPersonagem;
 
+import lombok.Data;
+
+@Data
 public class Status {
     private Integer nivel;
     private int forca;
     private int agilidade;
-    private int vigor;
     private int intelecto;
+    private int vigor;
     private int presenca;
     private int statusTotal;
 
@@ -38,7 +41,7 @@ public class Status {
     }
 
     public Integer getVigor() {
-        return vigor;
+        return intelecto;
     }
 
     public Integer getAgilidade() {
@@ -99,7 +102,7 @@ public class Status {
     }
 
     public int getStatusRestantes() {
-        int usados = forca + agilidade + intelecto + vigor;
+        int usados = forca + agilidade + intelecto + intelecto;
         return statusTotal - usados;
     }
 }

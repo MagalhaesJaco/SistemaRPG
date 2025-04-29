@@ -1,4 +1,4 @@
-package org.example.informaçoesPersonagem;
+package org.example.informacoesPersonagem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ public class ListaHabilidades {
     public void addHabilidade (Habilidade habilidade){
         this.ListaHabilidades.add(habilidade);
     }
+
     public List<Habilidade> getHabilidades() {
         return ListaHabilidades;
     }

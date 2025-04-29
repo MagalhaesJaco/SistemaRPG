@@ -1,6 +1,4 @@
-package org.example.informaçoesPersonagem;
-
-import org.example.model.Calculos;
+package org.example.informacoesPersonagem;
 
 public enum Classe {
 
@@ -12,11 +10,16 @@ public enum Classe {
     Paladino("Guerreiro sagrado, equilibrado entre força e presença", 2, 0, 1, 3, 0),
     Arqueiro("Especialista em ataques à distância", 1, 4, 0, 0, 0),
     Druida("Conectado à natureza, usa magia e vigor", 0, 0, 2, 1, 3),
-    Bárbaro("Bruto e resistente, com força descomunal", 4, 0, 2, 0, 0),
-    Feiticeiro("Mestre das artes arcanas, de intelecto elevado", 0, 0, 0, 1, 4);
+    Barbaro("Bruto e resistente, com força descomunal", 4, 0, 2, 0, 0),
+    Feiticeiro("Mestre das artes arcanas, de intelecto elevado", 0, 0, 0, 1, 4),
+    Selvagem("Combatente feroz da natureza", 2, 2, 1, 0, 0),
+    Brutalmente("Forte mas lento", 4, 0, 3, 0, 0),
+    Tanque("Defensor robusto", 2, 0, 4, 0, 0);
 
 
-    // Definição de atributos ! //
+
+    // Definição de atributos das classes ! //
+
     private final String descricao;
     private final Integer forcaBonus;
     private final Integer agilidadeBonus;
@@ -24,6 +27,7 @@ public enum Classe {
     private final Integer presencaBonus;
     private final Integer intelectoBonus;
 
+    // Construtor ! //
     Classe(String descricao, Integer forcaBonus,Integer agilidadeBonus,Integer vigorBonus,Integer presencaBonus,Integer intelectoBonus) {
         this.descricao = descricao;
         this.forcaBonus = forcaBonus;
@@ -33,6 +37,7 @@ public enum Classe {
         this.intelectoBonus = intelectoBonus;
     }
 
+    // Gets ! //
 
     public String getDescricao() {
         return descricao;
