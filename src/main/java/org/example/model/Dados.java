@@ -3,7 +3,7 @@ package org.example.model;
 import java.util.Random;
 public class Dados {
 
-    private Random random = new Random();
+    Random random = new Random();
 
     public Integer getD20 (){
         return random.nextInt(20) + 1;

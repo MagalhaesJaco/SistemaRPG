@@ -3,12 +3,16 @@ import org.example.informacoesPersonagem.*;
 
 import java.util.Scanner;
 import org.example.model.Dados;
-
+import org.example.model.Monstro;
 
 
 public class SistemaRPG {
     public static void main(String[] args) {
         Dados dados = new Dados();
+        ListaMonstros Bestiario = new ListaMonstros();
+
+        System.out.println(Bestiario.buscarPorNome("Lobo"));
+
         Scanner scanner = new Scanner(System.in);
 
         ListaHabilidades HabilidadesOswaldo = new ListaHabilidades();
@@ -40,6 +44,7 @@ public class SistemaRPG {
 
         ListaJogadores.addPersonagen(Oswaldo);
         ListaJogadores.addPersonagen(Adalberto);
+
         System.out.println("Chat Geral !");
         System.out.println("Para rola atributos siga a lista a baixo:\n" +
                 "1 = Força\n" +
@@ -116,6 +121,8 @@ public class SistemaRPG {
                                 status = 0;
                                 System.out.println("Dado base selecionado!");
                                 break;
+                            case "Caçar":
+                                System.out.println("Encontrou um " + Bestiario.buscarMonstro().getNome());
                         }
                     }
                 }
@@ -125,5 +132,6 @@ public class SistemaRPG {
                 System.out.println("Selecione um personagem!");
             }
         }
+
     }
 }

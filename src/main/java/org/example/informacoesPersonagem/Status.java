@@ -41,7 +41,7 @@ public class Status {
     }
 
     public Integer getVigor() {
-        return intelecto;
+        return vigor;
     }
 
     public Integer getAgilidade() {

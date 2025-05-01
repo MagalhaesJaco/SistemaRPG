@@ -1,9 +1,13 @@
 package org.example.informacoesPersonagem;
 
 import lombok.*;
+import org.example.model.Acoes;
 import org.example.model.Calculos;
 import org.example.model.Dados;
+import org.example.model.Monstro;
 
+import javax.sound.midi.Soundbank;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Personagem extends Status implements Calculos  {
+public class Personagem extends Status implements Calculos, Acoes {
 
     // Definiçoes de atributos ! //
 
@@ -20,24 +24,22 @@ public class Personagem extends Status implements Calculos  {
     private String nome;
     private Raca raca;
     private ItemDeUso itemDeUso;
-    @Setter
-    private ListaHabilidades habilidade;
-    @Getter
     private Classe classe;
     private Status status;
-    private Integer vidaMax = 0;
-    private Integer manaMax = 0;
+    private Integer vidaMax = null;
+    private Integer manaMax = null;
     private final List<Integer> vidaPorNivel = new ArrayList<>();
-
+    @Setter
+    private ListaHabilidades habilidade;
     // Construtores ! //
 
     public Personagem (Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca, String nome, ItemDeUso itemDeUso, Raca raca, Classe classe, ListaHabilidades habilidade) {
         setNome(nome);
         setRaca(raca);
-        setHabilidades(habilidade);
         setClasse(classe);
         setItemDeUso(itemDeUso);
         setNivel(nivel);
+        setHabilidades(habilidade);
 
         setForca(forca);
         setAgilidade(agilidade);
@@ -48,6 +50,7 @@ public class Personagem extends Status implements Calculos  {
     }
 
     public void setHabilidades(ListaHabilidades habilidade) {
+        this.habilidade = habilidade;
     }
 
     // Criação dos dados de rolagem ! //
@@ -67,7 +70,7 @@ public class Personagem extends Status implements Calculos  {
 
         switch(getClasse()){
             case Mago, Feiticeiro ->{
-                vidaMax = (vigor + bonusClasse) + bonusRaca + 6;
+                vidaMax = (vigor + bonusClasse ) + bonusRaca + 6;
             }
             case Guerreiro, Paladino -> {
                 vidaMax = (vigor + bonusClasse) + bonusRaca + 10;
@@ -129,7 +132,7 @@ public class Personagem extends Status implements Calculos  {
         }
 
         atualizarVidaPorNivel();
-        return manaMax + bonusRaca ;
+        return manaMax ;
     }
 
     // Metodos auxilires ! //
@@ -148,5 +151,21 @@ public class Personagem extends Status implements Calculos  {
         System.out.println(" Intelecto: " + (personagem.getIntelecto() + personagem.getClasse().getIntelectoBonus() + personagem.getRaca().getIntelectoBonus()));
         System.out.println(" Presença: " + (personagem.getPresenca() + personagem.getClasse().getPresencaBonus() + personagem.getRaca().getPresencaBonus()));
     }
-}
 
+    public void chamarPersonagem(){
+        int vidaAtual = vidaMax;
+        int mana = manaMax;
+
+        System.out.println("Nome: " + nome);
+        System.out.println("Vida: " + vidaAtual + "/" + vidaMax);
+        System.out.println("Esta usando: " + itemDeUso);
+
+    }
+    public Integer atacar(Personagem alvo) {
+       return 0;
+    }
+    public Personagem combate() {
+        ListaMonstros Bestiario = new ListaMonstros();
+        return Bestiario.buscarMonstro();
+    }
+}
