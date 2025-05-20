@@ -1,137 +1,154 @@
 package org.example;
+
 import org.example.informacoesPersonagem.*;
+import org.example.model.Dados;
 
 import java.util.Scanner;
-import org.example.model.Dados;
-import org.example.model.Monstro;
-
 
 public class SistemaRPG {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final Dados dados = new Dados();
+    private static final ListaMonstros Bestiario = new ListaMonstros();
     public static void main(String[] args) {
-        Dados dados = new Dados();
-        ListaMonstros Bestiario = new ListaMonstros();
+        ListaMonstros bestiario = new ListaMonstros();
+        System.out.println(bestiario.buscarPorNome("Lobo"));
 
-        System.out.println(Bestiario.buscarPorNome("Lobo"));
+        // Habilidades
+        ListaHabilidades habilidadesOswaldo = new ListaHabilidades();
+        habilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
 
-        Scanner scanner = new Scanner(System.in);
+        ListaHabilidades habilidadesAdalberto = new ListaHabilidades();
+        habilidadesAdalberto.addHabilidade(Habilidade.BolaDeFogo);
 
-        ListaHabilidades HabilidadesOswaldo = new ListaHabilidades();
-        ListaHabilidades HabilidadeAdalberto = new ListaHabilidades();
+        // Jogadores
+        ListaJogadores listaJogadores = new ListaJogadores();
 
-        HabilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
-
-        HabilidadeAdalberto.addHabilidade(Habilidade.BolaDeFogo);
-
-        ListaJogadores ListaJogadores = new ListaJogadores();
-
-        Personagem Oswaldo = new Personagem(
-                1,3,1,3,1,1,
+        Personagem oswaldo = new Personagem(
+                1, 3, 1, 3, 1, 1,
                 "Oswaldo",
                 ItemDeUso.EspadaDeMadeira,
                 Raca.Humano,
                 Classe.Mago,
-                HabilidadesOswaldo
+                habilidadesOswaldo
         );
 
-        Personagem Adalberto = new Personagem(
-                1,2,2,2,1,2,
+        Personagem adalberto = new Personagem(
+                1, 2, 2, 2, 1, 2,
                 "Adalberto",
-                ItemDeUso.EspadaDeMadeira,
+                ItemDeUso.VENENO_DE_ARANHA,
                 Raca.Gnomo,
                 Classe.Guerreiro,
-                HabilidadesOswaldo
+                habilidadesAdalberto
         );
 
-        ListaJogadores.addPersonagen(Oswaldo);
-        ListaJogadores.addPersonagen(Adalberto);
+        listaJogadores.addPersonagen(oswaldo);
+        listaJogadores.addPersonagen(adalberto);
 
-        System.out.println("Chat Geral !");
-        System.out.println("Para rola atributos siga a lista a baixo:\n" +
+        exibirMenuInicial();
+
+
+
+        while (true) {
+            System.out.print("\nDigite o nome do personagem: ");
+            String nomeInput = scanner.nextLine();
+
+            Personagem personagemSelecionado = buscarPersonagemPorNome(listaJogadores, nomeInput);
+            if (personagemSelecionado != null) {
+                interagirComPersonagem(personagemSelecionado);
+
+            } else {
+                System.out.println("Personagem não encontrado! Tente novamente.");
+            }
+        }
+    }
+
+    private static void exibirMenuInicial() {
+        System.out.println("Chat Geral!");
+        System.out.println("Para rolar atributos siga a lista abaixo:\n" +
                 "1 = Força\n" +
                 "2 = Agilidade\n" +
                 "3 = Intelecto\n" +
                 "4 = Presença\n" +
                 "5 = Vigor\n" +
-                "0 = Base"
-        );
-        System.out.println("Qual personagem vai ser usado?");
+                "0 = Base");
+    }
+
+    private static Personagem buscarPersonagemPorNome(ListaJogadores lista, String nome) {
+        return lista.getPersonagens().stream()
+                .filter(p -> p.getNome().equalsIgnoreCase(nome))
+                .findFirst()
+                .orElse(null);
+    }
+
+    private static void interagirComPersonagem(Personagem personagem) {
+        personagem.atualizarVidaPorNivel();
+        personagem.verFicha(personagem);
+
+        System.out.println("\n# Habilidades #");
+        personagem.getHabilidades().getHabilidades().forEach(habilidade -> {
+            System.out.println("-------------------");
+            System.out.println("Nome: " + habilidade.getNome());
+            System.out.println("Dano: " + habilidade.getDano());
+            System.out.println("-------------------");
+        });
+
+        System.out.println(personagem.getResumoPersonagem());
+
+        int statusBonus = 0;
+
         while (true) {
-            String InputUsuario = scanner.nextLine();
-            boolean personagemEncontrado = false;
+            System.out.print("> ");
+            String comando = scanner.nextLine().trim().toLowerCase();
 
-            for (Personagem personagem : ListaJogadores.getPersonagens()) {
-                if (personagem.getNome().contains(InputUsuario)) {
-                    personagemEncontrado = true;
-                    personagem.atualizarVidaPorNivel();
-                    personagem.verFicha(personagem);
-                    System.out.println("# Habilidades #");
-                    personagem.getHabilidades().getHabilidades().forEach(habilidade -> {
-                        System.out.println("-------------------");
-                        System.out.println("Nome: " + habilidade.getNome());
-                        System.out.println("Dano: " + habilidade.getDano());
-                        System.out.println("-------------------");
-                    });
-
-                    int status = 0;
-                    int dado = 0;
-                    int valores = 0;
-
-                    while (true) {
-                        String obsInputUsuario = scanner.nextLine();
-                        switch (obsInputUsuario) {
-                            case "d20":
-                                System.out.println("Rolou: " + (dado = dados.getD20()) + " + " + (valores = status) + " = " + (dado + valores));
-                                break;
-                            case "d12":
-                                System.out.println("Rolou: " + dados.getD12());
-                                break;
-                            case "d10":
-                                System.out.println("Rolou: " + dados.getD10());
-                                break;
-                            case "d8":
-                                System.out.println("Rolou: " + dados.getD8());
-                                break;
-                            case "d6":
-                                System.out.println("Rolou: " + dados.getD6());
-                                break;
-                            case "d4":
-                                System.out.println("Rolou: " + dados.getD4());
-                                break;
-                            case "1":
-                                status = personagem.getForca() + personagem.getClasse().getForcaBonus();
-                                System.out.println("Força selecionada!");
-                                break;
-                            case "2":
-                                status = personagem.getAgilidade() + personagem.getClasse().getAgilidadeBonus();
-                                System.out.println("Agilidade selecionada!");
-                                break;
-                            case "3":
-                                status = personagem.getIntelecto() + personagem.getClasse().getIntelectoBonus();
-                                System.out.println("Intelecto selecionado!");
-                                break;
-                            case "4":
-                                status = personagem.getPresenca() + personagem.getClasse().getPresencaBonus();
-                                System.out.println("Presença selecionada!");
-                                break;
-                            case "5":
-                                status = personagem.getVigor() + personagem.getClasse().getPresencaBonus();
-                                System.out.println("Vigor selecionado!");
-                                break;
-                            case "0":
-                                status = 0;
-                                System.out.println("Dado base selecionado!");
-                                break;
-                            case "Caçar":
-                                System.out.println("Encontrou um " + Bestiario.buscarMonstro().getNome());
-                        }
+            switch (comando) {
+                case "d20" -> rolarEDisplay("d20", dados.getD20(), statusBonus);
+                case "d12" -> rolarEDisplay("d12", dados.getD12(), 0);
+                case "d10" -> rolarEDisplay("d10", dados.getD10(), 0);
+                case "d8"  -> rolarEDisplay("d8", dados.getD8(), 0);
+                case "d6"  -> rolarEDisplay("d6", dados.getD6(), 0);
+                case "d4"  -> rolarEDisplay("d4", dados.getD4(), 0);
+                case "0", "base" -> {
+                    statusBonus = 0;
+                    System.out.println("Dado base selecionado!");
+                }
+                case "1" -> statusBonus = selecionarStatus(personagem, "forca");
+                case "2" -> statusBonus = selecionarStatus(personagem, "agilidade");
+                case "3" -> statusBonus = selecionarStatus(personagem, "intelecto");
+                case "4" -> statusBonus = selecionarStatus(personagem, "presenca");
+                case "5" -> statusBonus = selecionarStatus(personagem, "vigor");
+                case "atacar" -> {
+                    comando = scanner.nextLine().trim().toLowerCase();
+                    if(Bestiario.buscarPorNome(comando) != null) {
+                        System.out.println(Bestiario.buscarPorNome(comando).getResumoPersonagem());
+                        personagem.atacar(Bestiario.buscarPorNome(comando));
+                        System.out.println(Bestiario.buscarPorNome(comando).getResumoPersonagem());
                     }
                 }
-            }
-
-            if (personagemEncontrado == false) {
-                System.out.println("Selecione um personagem!");
+                case "sair", "exit" -> {
+                    System.out.println("Saindo do personagem...\n");
+                    return;
+                }
+                default -> System.out.println("Comando inválido!");
             }
         }
+    }
 
+    private static void rolarEDisplay(String dado, int valorRolado, int bonus) {
+        int total = valorRolado + bonus;
+        String mensagem = bonus > 0 ? (valorRolado + " + " + bonus + " = " + total) : String.valueOf(valorRolado);
+        System.out.println("Rolou (" + dado + "): " + mensagem);
+    }
+
+    private static int selecionarStatus(Personagem personagem, String tipo) {
+        int valor = switch (tipo) {
+            case "forca" -> personagem.getForca() + personagem.getClasse().getForcaBonus();
+            case "agilidade" -> personagem.getAgilidade() + personagem.getClasse().getAgilidadeBonus();
+            case "intelecto" -> personagem.getIntelecto() + personagem.getClasse().getIntelectoBonus();
+            case "presenca" -> personagem.getPresenca() + personagem.getClasse().getPresencaBonus();
+            case "vigor" -> personagem.getVigor() + personagem.getClasse().getVigorBonus();
+            default -> 0;
+        };
+        System.out.println(tipo.substring(0, 1).toUpperCase() + tipo.substring(1) + " selecionado!");
+        return valor;
     }
 }

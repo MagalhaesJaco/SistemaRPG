@@ -4,7 +4,7 @@ import org.example.informacoesPersonagem.Personagem;
 
 public interface Acoes {
 
-    public Integer atacar ( Personagem alvo);
+    public void atacar ( Personagem alvo);
 
     public Personagem combate ();
 

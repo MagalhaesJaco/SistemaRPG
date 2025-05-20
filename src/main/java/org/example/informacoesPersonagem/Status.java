@@ -71,6 +71,8 @@ public class Status {
         }
     }
 
+    
+
     public void setIntelecto(Integer intelecto) {
         if (podeAtribuir(intelecto)) {
             this.intelecto = intelecto;

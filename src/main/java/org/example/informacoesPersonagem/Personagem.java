@@ -1,13 +1,8 @@
 package org.example.informacoesPersonagem;
 
 import lombok.*;
-import org.example.model.Acoes;
-import org.example.model.Calculos;
-import org.example.model.Dados;
-import org.example.model.Monstro;
+import org.example.model.*;
 
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,155 +12,168 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Personagem extends Status implements Calculos, Acoes {
 
-    // Definiçoes de atributos ! //
-
-    // Gets e sets ! //
-    @Getter
+    // === Atributos principais === //
     private String nome;
     private Raca raca;
     private ItemDeUso itemDeUso;
     private Classe classe;
-    private Status status;
+    private ListaHabilidades habilidades;
+
+
+    @Setter(AccessLevel.PUBLIC)
     private Integer vidaMax = null;
+    private int vidaAtual;
+
     private Integer manaMax = null;
     private final List<Integer> vidaPorNivel = new ArrayList<>();
-    @Setter
-    private ListaHabilidades habilidade;
-    // Construtores ! //
 
-    public Personagem (Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca, String nome, ItemDeUso itemDeUso, Raca raca, Classe classe, ListaHabilidades habilidade) {
+    // === Construtor customizado === //
+    public Personagem(Integer nivel, Integer forca, Integer agilidade, Integer vigor,
+                      Integer intelecto, Integer presenca, String nome,
+                      ItemDeUso itemDeUso, Raca raca, Classe classe,
+                      ListaHabilidades habilidade) {
         setNome(nome);
         setRaca(raca);
         setClasse(classe);
         setItemDeUso(itemDeUso);
         setNivel(nivel);
         setHabilidades(habilidade);
-
         setForca(forca);
         setAgilidade(agilidade);
         setVigor(vigor);
         setIntelecto(intelecto);
         setPresenca(presenca);
-
+        setVidaMax(calculoVidaMax());
+        setVidaAtual(vidaMax);
     }
 
-    public void setHabilidades(ListaHabilidades habilidade) {
-        this.habilidade = habilidade;
+    protected void setHabilidades(ListaHabilidades habilidade) {
+        this.habilidades =  habilidade;
     }
 
-    // Criação dos dados de rolagem ! //
-    Dados random = new Dados();
+    // === Dados de rolagem === //
+    private final Dados random = new Dados();
 
-    public ListaHabilidades getHabilidades() {
-        return habilidade;
-    }
-
-    // Calculo de vida maxima e melhorias por nivel ! //
-
+    // === Cálculo de Vida === //
+    @Override
     public Integer calculoVidaMax() {
         int vigor = getVigor() != null ? getVigor() : 0;
+        int bonusClasse = classe.getVigorBonus();
+        int bonusRaca = raca.getVigorBonus();
         int vidaAdicional = vidaPorNivel.stream().mapToInt(Integer::intValue).sum();
-        int bonusClasse = getClasse().getVigorBonus();
-        int bonusRaca = getRaca().getVigorBonus();
 
-        switch(getClasse()){
-            case Mago, Feiticeiro ->{
-                vidaMax = (vigor + bonusClasse ) + bonusRaca + 6;
-            }
-            case Guerreiro, Paladino -> {
-                vidaMax = (vigor + bonusClasse) + bonusRaca + 10;
-            }
-            case Arqueiro, Ladino, Druida -> {
-                vidaMax = (vigor + bonusClasse) + bonusRaca + 8;
-            }
-            case Barbaro -> {
-                vidaMax = (vigor + bonusClasse) + bonusRaca + 12;
-            }
-        }
+        int base = switch (classe) {
+            case Mago, Feiticeiro -> 6;
+            case Guerreiro, Paladino -> 10;
+            case Arqueiro, Ladino, Druida -> 8;
+            case Barbaro -> 12;
+            case Selvagem -> 10;
+            case Brutalmente -> 14;
+            case Tanque -> 14;
+        };
 
+        vidaMax = vigor + bonusClasse + bonusRaca + base;
         atualizarVidaPorNivel();
-        return vidaMax + bonusRaca + vidaAdicional;
+        return vidaMax + vidaAdicional;
+    }
+
+    @Override
+    public Integer calculoManaMax() {
+        int intelecto = getIntelecto() != null ? getIntelecto() : 0;
+        int bonusClasse = classe.getIntelectoBonus();
+        int bonusRaca = raca.getIntelectoBonus();
+
+        int base = switch (classe) {
+            case Mago, Feiticeiro -> 6;
+            case Guerreiro, Paladino -> 10;
+            case Arqueiro, Ladino, Druida -> 8;
+            case Barbaro -> 12;
+            case Selvagem -> 10;
+            case Brutalmente -> 12;
+            case Tanque -> 12;
+        };
+
+        manaMax = intelecto + bonusClasse + bonusRaca + base;
+        return manaMax;
     }
 
     public void atualizarVidaPorNivel() {
         int nivel = getNivel() != null ? getNivel() : 1;
-        switch (classe) {
-            case Mago, Feiticeiro -> {
-                while (vidaPorNivel.size() < (nivel - 1)) {
-                    vidaPorNivel.add(random.getD6());
-                }
-            }
-            case Druida, Ladino, Arqueiro -> {
-                while (vidaPorNivel.size() < (nivel - 1)) {
-                    vidaPorNivel.add(random.getD8());
-                }
-            }
-            case Guerreiro, Paladino -> {
-                while (vidaPorNivel.size() < (nivel - 1)) {
-                    vidaPorNivel.add(random.getD10());
-                }
-            }
-            case Barbaro -> {while (vidaPorNivel.size() < (nivel - 1)) {
-                vidaPorNivel.add(random.getD12());
-            }}
+        int rolagensNecessarias = nivel - 1;
+
+        while (vidaPorNivel.size() < rolagensNecessarias) {
+            int dado = switch (classe) {
+                case Mago, Feiticeiro -> random.getD6();
+                case Druida, Ladino, Arqueiro -> random.getD8();
+                case Guerreiro, Paladino -> random.getD10();
+                case Barbaro, Brutalmente, Tanque -> random.getD12();
+                case Selvagem -> random.getD10();
+            };
+            vidaPorNivel.add(dado);
         }
     }
 
-    public Integer calculoManaMax() {
-        int intelecto = getIntelecto() != null ? getIntelecto() : 0;
-        int bonusClasse = getClasse().getIntelectoBonus();
-        int bonusRaca = getRaca().getIntelectoBonus();
+    // === Métodos auxiliares === //
 
-        switch(getClasse()){
-            case Mago, Feiticeiro ->{
-                manaMax = (intelecto + bonusClasse) + bonusRaca + 6;
-            }
-            case Guerreiro, Paladino -> {
-                manaMax = (intelecto + bonusClasse) + bonusRaca + 10;
-            }
-            case Arqueiro, Ladino, Druida -> {
-                manaMax = (intelecto + bonusClasse) + bonusRaca + 8;
-            }
-            case Barbaro -> {
-                manaMax = (intelecto + bonusClasse) + bonusRaca + 12;
-            }
-        }
-
-        atualizarVidaPorNivel();
-        return manaMax ;
-    }
-
-    // Metodos auxilires ! //
-
-    public void verFicha(Personagem personagem){
+    public void verFicha(Personagem personagem) {
         System.out.println("Você está usando o: " + personagem.getNome() + "\n");
         System.out.println("# Ficha " + personagem.getNome() + " #");
         System.out.println(" Vida: " + personagem.calculoVidaMax());
         System.out.println(" Raça: " + personagem.getRaca());
         System.out.println(" Está usando: " + personagem.getItemDeUso().getNome());
         System.out.println(" Classe: " + personagem.getClasse());
+
         System.out.println("# Status #");
-        System.out.println(" Força: " + (personagem.getForca() + personagem.getClasse().getForcaBonus() + personagem.getRaca().getForcaBonus()));
-        System.out.println(" Agilidade: " + (personagem.getAgilidade() + personagem.getClasse().getAgilidadeBonus() + personagem.getRaca().getAgilidadeBonus()));
-        System.out.println(" Vigor: " + (personagem.getVigor() + personagem.getClasse().getVigorBonus() + personagem.getRaca().getVigorBonus()));
-        System.out.println(" Intelecto: " + (personagem.getIntelecto() + personagem.getClasse().getIntelectoBonus() + personagem.getRaca().getIntelectoBonus()));
-        System.out.println(" Presença: " + (personagem.getPresenca() + personagem.getClasse().getPresencaBonus() + personagem.getRaca().getPresencaBonus()));
+        System.out.println(" Força: " + (getForca() + classe.getForcaBonus() + raca.getForcaBonus()));
+        System.out.println(" Agilidade: " + (getAgilidade() + classe.getAgilidadeBonus() + raca.getAgilidadeBonus()));
+        System.out.println(" Vigor: " + (getVigor() + classe.getVigorBonus() + raca.getVigorBonus()));
+        System.out.println(" Intelecto: " + (getIntelecto() + classe.getIntelectoBonus() + raca.getIntelectoBonus()));
+        System.out.println(" Presença: " + (getPresenca() + classe.getPresencaBonus() + raca.getPresencaBonus()));
     }
 
-    public void chamarPersonagem(){
-        int vidaAtual = vidaMax;
-        int mana = manaMax;
 
-        System.out.println("Nome: " + nome);
-        System.out.println("Vida: " + vidaAtual + "/" + vidaMax);
-        System.out.println("Esta usando: " + itemDeUso);
+    public String getResumoPersonagem() {
+        if (vidaMax == null) calculoVidaMax();
+        if (manaMax == null) calculoManaMax();
 
+         // Aqui você pode usar um campo separado, se tiver controle de vida dinâmica
+        int manaAtual = manaMax;
+
+
+        String barraVida = gerarBarra(getVidaAtual(), getVidaMax(), 20);
+        String barraMana = gerarBarra(manaAtual, getManaMax(), 20);
+
+        return String.format("""
+        ===== Personagem =====
+        Nome: %s
+        vida: %d/%d %s
+        Mana: %d/%d %s
+        Classe: %s
+        Raça: %s
+        Usando item: %s
+        ======================
+        """,
+                nome,
+                getVidaAtual(), getVidaMax(), barraVida,
+                manaAtual, getManaMax(), barraMana,
+                classe, raca,
+                itemDeUso != null ? itemDeUso.getNome() : "Nenhum"
+        );
     }
-    public Integer atacar(Personagem alvo) {
-       return 0;
+    private String gerarBarra(int atual, int max, int tamanho) {
+        int preenchido = (int) ((double) atual / max * tamanho);
+        int vazio = tamanho - preenchido;
+        return "[" + "█".repeat(preenchido) + "░".repeat(vazio) + "]";
     }
+
+    // === Implementação de Ações === //
+    @Override
+    public void atacar(Personagem alvo) {
+        alvo.setVidaAtual(getVidaAtual() - itemDeUso.getDano());
+    }
+
+    @Override
     public Personagem combate() {
-        ListaMonstros Bestiario = new ListaMonstros();
-        return Bestiario.buscarMonstro();
+        return new ListaMonstros().monstroAleatorio();
     }
 }
