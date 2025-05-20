@@ -1,13 +1,16 @@
 package org.example.informacoesPersonagem;
 
+import lombok.Getter;
 import org.example.model.Monstro;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class ListaMonstros {
     Random aleatorio = new Random();
+    @Getter
     private Monstro[] listaMonstros = {
             new Monstro(1, 5, 4, 3, 1, 2, "Lobo", ItemDeUso.GarraDeFera, Raca.Fera, new ListaHabilidades()),
             new Monstro(2, 4, 3, 2, 2, 1, "Esqueleto", ItemDeUso.OSSADA, Raca.MortoVivo, new ListaHabilidades()),
@@ -23,8 +26,12 @@ public class ListaMonstros {
     };
     public ListaMonstros (){};
 
-    public Monstro[] getListaMonstros(){
-        return listaMonstros;
+
+    private  Personagem buscarPersonagemPorNome(ListaMonstros lista, String nome) {
+        return Arrays.stream(getListaMonstros())
+                .filter(p -> p.getNome().equalsIgnoreCase(nome))
+                .findFirst()
+                .orElse(null);
     }
     public Monstro buscarPorNome(String nome) {
         for (Monstro monstro : listaMonstros) {
@@ -34,7 +41,9 @@ public class ListaMonstros {
         }
         return null;
     }
-    public Monstro buscarMonstro(){
+
+
+    public Monstro monstroAleatorio(){
           int posicaoAletoria = aleatorio.nextInt(listaMonstros.length);
           return listaMonstros[posicaoAletoria];
     }
