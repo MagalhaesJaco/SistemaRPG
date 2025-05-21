@@ -18,7 +18,7 @@ public class Personagem extends Status implements Calculos, Acoes {
     private ItemDeUso itemDeUso;
     private Classe classe;
     private ListaHabilidades habilidades;
-
+    private Integer defence;
 
     @Setter(AccessLevel.PUBLIC)
     private Integer vidaMax = null;
@@ -45,6 +45,7 @@ public class Personagem extends Status implements Calculos, Acoes {
         setPresenca(presenca);
         setVidaMax(calculoVidaMax());
         setVidaAtual(vidaMax);
+        setDefence((vigor/2) + 10);
     }
 
     protected void setHabilidades(ListaHabilidades habilidade) {
@@ -128,7 +129,7 @@ public class Personagem extends Status implements Calculos, Acoes {
         System.out.println(" Agilidade: " + (getAgilidade() + classe.getAgilidadeBonus() + raca.getAgilidadeBonus()));
         System.out.println(" Vigor: " + (getVigor() + classe.getVigorBonus() + raca.getVigorBonus()));
         System.out.println(" Intelecto: " + (getIntelecto() + classe.getIntelectoBonus() + raca.getIntelectoBonus()));
-        System.out.println(" Presença: " + (getPresenca() + classe.getPresencaBonus() + raca.getPresencaBonus()));
+        System.out.println(" Presença: " + (getPresenca() + classe.getPresencaBonus() + raca.getPresencaBonus()) + "\n");
     }
 
 
@@ -142,6 +143,7 @@ public class Personagem extends Status implements Calculos, Acoes {
 
         String barraVida = gerarBarra(getVidaAtual(), getVidaMax(), 20);
         String barraMana = gerarBarra(manaAtual, getManaMax(), 20);
+
 
         return String.format("""
         ===== Personagem =====
@@ -169,7 +171,16 @@ public class Personagem extends Status implements Calculos, Acoes {
     // === Implementação de Ações === //
     @Override
     public void atacar(Personagem alvo) {
-        alvo.setVidaAtual(getVidaAtual() - itemDeUso.getDano());
+        Integer dano = itemDeUso.getDano();
+        Integer acerto = random.getD20() + getForca();
+        System.out.println("Você rolou: " + acerto + ", esta é a defesa: " + alvo.getDefence());
+        if(acerto > alvo.getDefence()){
+            alvo.setVidaAtual(alvo.getVidaAtual() - dano);
+            System.out.println("Acertou: " + dano + " de dano no alvo!\n");
+        }else{
+            System.out.println("Errou!\n");
+        }
+
     }
 
     @Override

@@ -1,9 +1,10 @@
 package org.example.informacoesPersonagem;
 
 import lombok.Data;
+import org.example.model.Combate;
 
 @Data
-public class Status {
+public class Status extends Combate {
     private Integer nivel;
     private int forca;
     private int agilidade;
