@@ -1,32 +1,30 @@
 package org.example.informacoesPersonagem;
-
+import jakarta.persistence.criteria.CriteriaBuilder;
+import org.example.model.Dados;
 public enum ItemDeUso {
 
     // Definiçoes de itens ! //
-
-    EspadaDeMadeira("Espada-de-madeira", 5),
+    EspadaDeMadeira("Espada-de-madeira", 4),
     MachadoDeGuerra("Machado de Guerra", 12),
     CajadoMagico("Cajado Mágico", 8),
-    ArcoSimples("Arco Simples", 7),
+    ArcoSimples("Arco Simples", 8),
     AdagaSombria("Adaga Sombria", 6),
-    MarteloPesado("Martelo Pesado", 15),
-    LancaDeCaçador("Lança de Caçador", 9),
+    MarteloPesado("Martelo Pesado", 12),
+    LancaDeCaçador("Lança de Caçador", 10),
     LivroDeFeiticos("Livro de Feitiços", 10),
-    GarraDeFera("Garra de Fera", 11),
-    GARRA_DE_FERA("Garra de Fera", 5),
+    GarraDeFera("Garra de Fera", 8),
     OSSADA("Ossada", 4),
-    FACA_RUSTICA("Faca Rústica", 6),
-    PEDRA_GRANDE("Pedra Grande", 7),
-    VENENO_DE_ARANHA("Veneno de Aranha", 6),
-    CARNE_PODRE("Carne Podre", 3),
+    FACA_RUSTICA("Faca Rústica", 4),
+    PEDRA_GRANDE("Pedra Grande", 6),
+    VENENO_DE_ARANHA("Veneno de Aranha", 4),
+    CARNE_PODRE("Carne Podre", 4),
     ESCAMA_DE_DRAGAO("Escama de Dragão", 8),
-    VENENO_CONCENTRADO("Veneno Concentrado", 7),
-    FRAGMENTO_DE_PEDRA("Fragmento de Pedra", 5),
-    ESSENCIA_SOMBRIA("Essência Sombria", 7);
+    VENENO_CONCENTRADO("Veneno Concentrado", 10),
+    FRAGMENTO_DE_PEDRA("Fragmento de Pedra", 4),
+    ESSENCIA_SOMBRIA("Essência Sombria", 8);
 
 
     // Definição de atributos !! //
-
     private final String nome;
     private Integer dano;
 
@@ -48,6 +46,19 @@ public enum ItemDeUso {
     }
 
     public Integer getDano() {
-        return dano;
+        return roll(dano);
+    }
+
+    public Integer roll(Integer face){
+        Dados roll = new Dados();
+        Integer dado = 0;
+        switch (face){
+            case 4 -> dado = roll.getD4();
+            case 6 -> dado = roll.getD6();
+            case 8 -> dado = roll.getD8();
+            case 10 -> dado = roll.getD10();
+            case 12 -> dado = roll.getD12();
+        }
+        return dado;
     }
 }

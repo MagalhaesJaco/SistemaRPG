@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.informacoesPersonagem.*;
+import org.example.model.Combate;
 import org.example.model.Dados;
 
 import java.util.Scanner;
@@ -45,9 +46,6 @@ public class SistemaRPG {
         listaJogadores.addPersonagen(adalberto);
 
         exibirMenuInicial();
-
-
-
         while (true) {
             System.out.print("\nDigite o nome do personagem: ");
             String nomeInput = scanner.nextLine();
@@ -70,7 +68,7 @@ public class SistemaRPG {
                 "3 = Intelecto\n" +
                 "4 = Presença\n" +
                 "5 = Vigor\n" +
-                "0 = Base");
+                "0 = Base\n");
     }
 
     private static Personagem buscarPersonagemPorNome(ListaJogadores lista, String nome) {
@@ -83,14 +81,6 @@ public class SistemaRPG {
     private static void interagirComPersonagem(Personagem personagem) {
         personagem.atualizarVidaPorNivel();
         personagem.verFicha(personagem);
-
-        System.out.println("\n# Habilidades #");
-        personagem.getHabilidades().getHabilidades().forEach(habilidade -> {
-            System.out.println("-------------------");
-            System.out.println("Nome: " + habilidade.getNome());
-            System.out.println("Dano: " + habilidade.getDano());
-            System.out.println("-------------------");
-        });
 
         System.out.println(personagem.getResumoPersonagem());
 
@@ -116,13 +106,9 @@ public class SistemaRPG {
                 case "3" -> statusBonus = selecionarStatus(personagem, "intelecto");
                 case "4" -> statusBonus = selecionarStatus(personagem, "presenca");
                 case "5" -> statusBonus = selecionarStatus(personagem, "vigor");
-                case "atacar" -> {
-                    comando = scanner.nextLine().trim().toLowerCase();
-                    if(Bestiario.buscarPorNome(comando) != null) {
-                        System.out.println(Bestiario.buscarPorNome(comando).getResumoPersonagem());
-                        personagem.atacar(Bestiario.buscarPorNome(comando));
-                        System.out.println(Bestiario.buscarPorNome(comando).getResumoPersonagem());
-                    }
+                case "caçar" -> {
+                    Personagem criatura = Bestiario.monstroAleatorio();
+                    personagem.combate(personagem,criatura);
                 }
                 case "sair", "exit" -> {
                     System.out.println("Saindo do personagem...\n");

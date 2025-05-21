@@ -39,6 +39,7 @@ public class Monstro extends Personagem {
         setPresenca(presenca);
         setVidaMax(calculoVidaMax());
         setVidaAtual(vidaMax);
+        setDefence((vigor) + 10);
 
     }
 
