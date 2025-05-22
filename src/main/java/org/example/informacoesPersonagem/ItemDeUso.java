@@ -1,54 +1,46 @@
 package org.example.informacoesPersonagem;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.Getter;
 import org.example.model.Dados;
+
+@Getter
 public enum ItemDeUso {
 
     // Definiçoes de itens ! //
-    EspadaDeMadeira("Espada-de-madeira", 4),
-    MachadoDeGuerra("Machado de Guerra", 12),
-    CajadoMagico("Cajado Mágico", 8),
-    ArcoSimples("Arco Simples", 8),
-    AdagaSombria("Adaga Sombria", 6),
-    MarteloPesado("Martelo Pesado", 12),
-    LancaDeCaçador("Lança de Caçador", 10),
-    LivroDeFeiticos("Livro de Feitiços", 10),
-    GarraDeFera("Garra de Fera", 8),
-    OSSADA("Ossada", 4),
-    FACA_RUSTICA("Faca Rústica", 4),
-    PEDRA_GRANDE("Pedra Grande", 6),
-    VENENO_DE_ARANHA("Veneno de Aranha", 4),
-    CARNE_PODRE("Carne Podre", 4),
-    ESCAMA_DE_DRAGAO("Escama de Dragão", 8),
-    VENENO_CONCENTRADO("Veneno Concentrado", 10),
-    FRAGMENTO_DE_PEDRA("Fragmento de Pedra", 4),
-    ESSENCIA_SOMBRIA("Essência Sombria", 8);
+    EspadaDeMadeira("Espada de Madeira", 4, "normal"),
+    MachadoDeGuerra("Machado de Guerra", 12, "pesada"),
+    CajadoMagico("Cajado Mágico", 8, "normal"),
+    ArcoSimples("Arco Simples", 8, "normal"),
+    AdagaSombria("Adaga Sombria", 6, "leve"),
+    MarteloPesado("Martelo Pesado", 12, "pesada"),
+    LancaDeCaçador("Lança de Caçador", 10, "normal"),
+    LivroDeFeiticos("Livro de Feitiços", 10, "leve"),
+    GarraDeFera("Garra de Fera", 8, "leve"),
+    OSSADA("Ossada", 4, "leve"),
+    FACA_RUSTICA("Faca Rústica", 4, "leve"),
+    PEDRA_GRANDE("Pedra Grande", 6, "pesada"),
+    VENENO_DE_ARANHA("Veneno de Aranha", 4, "leve"),
+    CARNE_PODRE("Carne Podre", 4, "normal"),
+    ESCAMA_DE_DRAGAO("Escama de Dragão", 8, "pesada"),
+    VENENO_CONCENTRADO("Veneno Concentrado", 10, "leve"),
+    FRAGMENTO_DE_PEDRA("Fragmento de Pedra", 4, "normal"),
+    ESSENCIA_SOMBRIA("Essência Sombria", 8, "normal");
 
 
     // Definição de atributos !! //
     private final String nome;
     private Integer dano;
+    private String tipo;
 
     // Construtor ! //
 
-    ItemDeUso(String nome, Integer dano){
+    ItemDeUso(String nome, Integer dano, String tipo){
         this.nome = nome;
         this.dano = dano;
+        this.tipo = tipo;
     }
 
     // Gets e sets !! //
-
-    public void setDano(Integer dano) {
-        this.dano = dano;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Integer getDano() {
-        return roll(dano);
-    }
-
     public Integer roll(Integer face){
         Dados roll = new Dados();
         Integer dado = 0;

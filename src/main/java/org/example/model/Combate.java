@@ -16,18 +16,40 @@ public abstract class Combate {
         System.out.println("\n" + atacante.getNome() + " prepara um ataque contra " + defensor.getNome() + "!");
 
         int dado = roll.getD20();
-        int acerto = dado + atacante.getForca();
+        String tipo =  atacante.getItemDeUso().getTipo();
+        int acerto;
+        int atributo = 0;
+
+        switch(tipo){
+            case "normal" -> {
+                if(atacante.getForcaTotal() >= atacante.getAgilidadeTotal()){
+                    atributo = atacante.getForcaTotal();
+                }else{
+                    atributo = atacante.getAgilidadeTotal();
+                }
+            }
+            case "pesada" -> atributo = atacante.getForcaTotal();
+            case "leve" -> atributo = atacante.getAgilidadeTotal();
+        }
+        acerto = dado + atributo;
         int defesa = defensor.getDefence();
         int dano = atacante.getItemDeUso().getDano();
 
-        System.out.println(atacante.getNome() + " rolou um D20 (" + dado + ") + Força (" + atacante.getForca() + ") = " + acerto);
+        System.out.println(atacante.getNome() + " rolou um D20 (" + dado + ") + Força (" + atributo + ") = " + acerto);
         System.out.println(defensor.getNome() + " possui Defesa total de: " + defesa);
 
         if (acerto >= defesa) {
+            if (dado == 20){
+                dano = 2 * dado;
+            }
+
             defensor.setVidaAtual(defensor.getVidaAtual() - dano);
-            System.out.println("💥 Ataque bem-sucedido! " + atacante.getNome() + " causou " + dano + " de dano!");
+            System.out.println("💥 Ataque bem-sucedido! " + atacante.getNome() + " causou " + dano + " de dano!\n");
         } else {
-            System.out.println("❌ Ataque falhou! " + defensor.getNome() + " defendeu com sucesso.");
+            if(dado == 1){
+                atacante.setVidaAtual(atacante.getVidaAtual() - dano);
+            }
+            System.out.println("❌ Ataque falhou! " + defensor.getNome() + " defendeu com sucesso.\n");
             dano = 0;
         }
 
@@ -46,7 +68,11 @@ public abstract class Combate {
             case 1 -> {
                 defesaExtraTemporaria = defensor.getAgilidade();
                 defensor.setDefence(defensor.getDefence() + defesaExtraTemporaria);
-                System.out.println(defensor.getNome() + " se esquiva! Defesa aumentada em +" + defesaExtraTemporaria + " por 1 turno.");
+                if(atacar(atacante, defensor) > 0){
+                    System.out.println(defensor.getNome() + " falha na esquiva. recebeu ataque em cheio!");
+                }else {
+                    System.out.println(defensor.getNome() + " se esquiva! Defesa aumentada em +" + defesaExtraTemporaria + " por 1 turno.");
+                }
             }
             case 2 -> {
                 System.out.println(defensor.getNome() + " se prepara para um contra-ataque!");
@@ -88,13 +114,28 @@ public abstract class Combate {
             System.out.println(inimigo.getResumoPersonagem());
             System.out.println("====================\n");
 
-            System.out.println("👉 " + jogador.getNome() + ", escolha sua ação:\n1 - Atacar");
+            System.out.println("👉 " + jogador.getNome() + ", escolha sua ação:" +
+                    "\n1 - Ataque Basico" +
+                    "\n2 - Usar Habilidade");
             if (scanner.nextInt() == 1) {
                 atacar(jogador, inimigo);
                 if (inimigo.getVidaAtual() <= 0) {
                     System.out.println("\n🏆 " + inimigo.getNome() + " foi derrotado!");
                     break;
                 }
+            }
+
+            if(scanner.nextInt() == 2){
+                System.out.println("======= Habilidades =========");
+
+                atacante.getHabilidades().getHabilidades().forEach(habilidade -> {
+                    int numeracao = 0;
+                    System.out.println(numeracao + " " + habilidade.getNome());
+                    numeracao += 1;
+                });
+
+
+                System.out.println("=============================");
             }
 
             System.out.println("\n⛑️ Sua reação ao ataque:");

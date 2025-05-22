@@ -132,6 +132,27 @@ public class Personagem extends Status implements Calculos, Acoes {
         System.out.println(" Presença: " + (getPresenca() + classe.getPresencaBonus() + raca.getPresencaBonus()) + "\n");
     }
 
+    public int getForcaTotal() {
+        return getForca() + classe.getForcaBonus() + raca.getForcaBonus();
+    }
+
+    public int getAgilidadeTotal() {
+        return getAgilidade() + classe.getAgilidadeBonus() + raca.getAgilidadeBonus();
+    }
+
+    public int getVigorTotal() {
+        return getVigor() + classe.getVigorBonus() + raca.getVigorBonus();
+    }
+
+    public int getIntelectoTotal() {
+        return getIntelecto() + classe.getIntelectoBonus() + raca.getIntelectoBonus();
+    }
+
+    public int getPresencaTotal() {
+        return getPresenca() + classe.getPresencaBonus() + raca.getPresencaBonus();
+    }
+
+
 
     public String getResumoPersonagem() {
         if (vidaMax == null) calculoVidaMax();
@@ -146,7 +167,7 @@ public class Personagem extends Status implements Calculos, Acoes {
 
 
         return String.format("""
-        ===== Personagem =====
+        \n===== Personagem =====
         Nome: %s
         vida: %d/%d %s
         Mana: %d/%d %s
