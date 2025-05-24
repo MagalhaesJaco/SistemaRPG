@@ -14,8 +14,11 @@ public class ListaHabilidades {
         this.ListaHabilidades.add(habilidade);
     }
 
-    public List<Habilidade> getHabilidades() {
+    public List<Habilidade> getHabilidade() {
         return ListaHabilidades;
+    }
+    public Habilidade get(Integer position){
+        return ListaHabilidades.get(position);
     }
 
 }

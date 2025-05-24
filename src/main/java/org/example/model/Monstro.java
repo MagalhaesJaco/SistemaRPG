@@ -82,6 +82,7 @@ public class Monstro extends Personagem {
 
         return vidaMax;
     }
+
 }
 
 

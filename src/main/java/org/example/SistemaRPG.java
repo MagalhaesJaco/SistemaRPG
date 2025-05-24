@@ -17,9 +17,10 @@ public class SistemaRPG {
         // Habilidades
         ListaHabilidades habilidadesOswaldo = new ListaHabilidades();
         habilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
+        habilidadesOswaldo.addHabilidade(Habilidade.ExplorarFraquezas);
 
         ListaHabilidades habilidadesAdalberto = new ListaHabilidades();
-        habilidadesAdalberto.addHabilidade(Habilidade.ExplorarFraquezas);
+        habilidadesAdalberto.addHabilidade(Habilidade.GolpeFendido);
 
         // Jogadores
         ListaJogadores listaJogadores = new ListaJogadores();
@@ -72,7 +73,6 @@ public class SistemaRPG {
         System.out.println(" caçar - procurar um inimigo");
         System.out.println("==============================");
     }
-
 
     private static Personagem buscarPersonagemPorNome(ListaJogadores lista, String nome) {
         return lista.getPersonagens().stream()
@@ -159,7 +159,7 @@ public class SistemaRPG {
 
         System.out.println("======= Habilidades =========");
 
-        personagem.getHabilidades().getHabilidades().forEach(habilidade -> {
+        personagem.getHabilidades().getHabilidade().forEach(habilidade -> {
             System.out.println(" " + habilidade.getNome());
         });
 

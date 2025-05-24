@@ -15,7 +15,7 @@ public enum ItemDeUso {
     MarteloPesado("Martelo Pesado", 12, "pesada"),
     LancaDeCaçador("Lança de Caçador", 10, "normal"),
     LivroDeFeiticos("Livro de Feitiços", 10, "leve"),
-    GarraDeFera("Garra de Fera", 8, "leve"),
+    GarraDeFera("Garra de Fera", 4, "leve"),
     OSSADA("Ossada", 4, "leve"),
     FACA_RUSTICA("Faca Rústica", 4, "leve"),
     PEDRA_GRANDE("Pedra Grande", 6, "pesada"),
@@ -36,12 +36,12 @@ public enum ItemDeUso {
 
     ItemDeUso(String nome, Integer dano, String tipo){
         this.nome = nome;
-        this.dano = dano;
+        this.dano = rollDamage(dano);
         this.tipo = tipo;
     }
 
     // Gets e sets !! //
-    public Integer roll(Integer face){
+    public Integer rollDamage(Integer face){
         Dados roll = new Dados();
         Integer dado = 0;
         switch (face){

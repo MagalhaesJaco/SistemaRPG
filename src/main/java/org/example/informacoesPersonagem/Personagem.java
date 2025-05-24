@@ -25,6 +25,7 @@ public class Personagem extends Status implements Calculos, Acoes {
     private int vidaAtual;
 
     private Integer manaMax = null;
+    private Integer manaAtual;
     private final List<Integer> vidaPorNivel = new ArrayList<>();
 
     // === Construtor customizado === //
@@ -44,7 +45,9 @@ public class Personagem extends Status implements Calculos, Acoes {
         setIntelecto(intelecto);
         setPresenca(presenca);
         setVidaMax(calculoVidaMax());
+        setManaMax(calculoManaMax());
         setVidaAtual(vidaMax);
+        setManaAtual(manaMax);
         setDefence((vigor/2) + 10);
     }
 
@@ -137,7 +140,7 @@ public class Personagem extends Status implements Calculos, Acoes {
     }
 
     public int getAgilidadeTotal() {
-        return getAgilidade() + classe.getAgilidadeBonus() + raca.getAgilidadeBonus();
+        return getAgilidade() + getClasse().getAgilidadeBonus() + raca.getAgilidadeBonus();
     }
 
     public int getVigorTotal() {
@@ -159,7 +162,6 @@ public class Personagem extends Status implements Calculos, Acoes {
         if (manaMax == null) calculoManaMax();
 
          // Aqui você pode usar um campo separado, se tiver controle de vida dinâmica
-        int manaAtual = manaMax;
 
 
         String barraVida = gerarBarra(getVidaAtual(), getVidaMax(), 20);
