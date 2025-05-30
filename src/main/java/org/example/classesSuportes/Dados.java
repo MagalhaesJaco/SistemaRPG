@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.classesSuportes;
 
 import java.util.Random;
 public class Dados {

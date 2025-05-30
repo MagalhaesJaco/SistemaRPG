@@ -1,4 +1,4 @@
-package org.example.informacoesPersonagem;
+package org.example.atributos;
 
 public enum Classe {
 

@@ -1,7 +1,7 @@
-package org.example.informacoesPersonagem;
+package org.example.atributos;
 
 import lombok.Getter;
-import org.example.model.Dados;
+import org.example.classesSuportes.Dados;
 
 @Getter
 public enum Habilidade {
@@ -12,7 +12,7 @@ public enum Habilidade {
     ContraAtaqueRapido("Contra-Ataque Rápido", 8,null,2,"inimigo"),
     VisaoDoEspírito("Visão do Espírito", 0,null,2,"ativa"),
     SombraIlusoria("Sombra Ilusória", 0,null,2,"usuario"),
-    ExplorarFraquezas("Explorar Fraquezas", 0,null,2,"inimigo");
+    ExplorarFraquezas("Explorar Fraquezas", 0,"+ 1d6 de dano",2,"usuario");
 
     // Definição de atributos ! //
 
@@ -35,8 +35,8 @@ public enum Habilidade {
     Dados dado = new Dados();
     public Integer efeito(){
         int efeito = 0;
-        if(Habilidade.valueOf(nome).equals(ExplorarFraquezas)){
-            System.out.println("1d6 de dano extra até o final da batalha!");
+        if(nome.equals(ExplorarFraquezas.getNome())){
+
             efeito = dado.getD6();
         }
         return efeito;

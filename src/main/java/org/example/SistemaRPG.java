@@ -1,17 +1,30 @@
 package org.example;
 
-import org.example.informacoesPersonagem.*;
-import org.example.model.Dados;
-import org.example.informacoesPersonagem.Personagem;
+import org.example.monstro.ListaMonstros;
+import org.example.monstro.Monstro;
+import org.example.atributos.Habilidade;
+import org.example.atributos.ItemDeUso;
+import org.example.atributos.ListaHabilidades;
+import org.example.atributos.Raca;
+import org.example.atributos.Classe;
+import org.example.personagem.*;
+import org.example.classesSuportes.Dados;
+import org.example.personagem.Personagem;
+import org.example.monstro.Monstro;
+import vercaoComBanco.enty.service.ItemDeUsoService;
 
+import java.sql.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class SistemaRPG {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Dados dados = new Dados();
     private static final ListaMonstros Bestiario = new ListaMonstros();
+    public static void main(String[] args) throws SQLException {
 
-    public static void main(String[] args) {
         ListaMonstros bestiario = new ListaMonstros();
 
         // Habilidades
@@ -28,7 +41,7 @@ public class SistemaRPG {
         Personagem oswaldo = new Personagem(
                 1, 3, 1, 3, 1, 1,
                 "Oswaldo",
-                ItemDeUso.EspadaDeMadeira,
+                ItemDeUso.GarraDeFera,
                 Raca.Humano,
                 Classe.Mago,
                 habilidadesOswaldo
@@ -110,7 +123,7 @@ public class SistemaRPG {
                 case "4" -> statusBonus = selecionarStatus(personagem, "presenca");
                 case "5" -> statusBonus = selecionarStatus(personagem, "vigor");
                 case "caçar" -> {
-                    Personagem criatura = Bestiario.monstroAleatorio();
+                    Monstro criatura = Bestiario.monstroAleatorio();
                     personagem.combate(personagem, criatura);
                 }
                 case "sair", "exit" -> {

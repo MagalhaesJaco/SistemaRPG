@@ -1,4 +1,4 @@
-package org.example.informacoesPersonagem;
+package org.example.personagem;
 import java.util.ArrayList;
 import java.util.List;
 

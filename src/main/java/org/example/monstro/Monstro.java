@@ -1,7 +1,12 @@
-package org.example.model;
+package org.example.monstro;
 
 import lombok.*;
-import org.example.informacoesPersonagem.*;
+import org.example.atributos.ItemDeUso;
+import org.example.atributos.ListaHabilidades;
+import org.example.atributos.Raca;
+import org.example.atributos.Status;
+import org.example.atributos.Classe;
+import org.example.personagem.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +31,9 @@ public class Monstro extends Personagem {
     public Monstro() {
     }
 
-    public Monstro(Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca, String nome, ItemDeUso itemDeUso, Raca raca, ListaHabilidades habilidade) {
+    public Monstro(Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca, String nome, ItemDeUso itemDeUso, Raca raca) {
         setNome(nome);
         setRaca(raca);
-        setHabilidades(habilidade);
         setItemDeUso(itemDeUso);
         setNivel(10);
         setForca(forca);
@@ -83,6 +87,27 @@ public class Monstro extends Personagem {
         return vidaMax;
     }
 
-}
+    public int getForcaTotalMonstro() {
+        return getForca() + raca.getForcaBonus();
+    }
+
+    public int getAgilidadeTotalMonstro() {
+        return getAgilidade() + raca.getAgilidadeBonus();
+    }
+
+    public int getVigorTotalMonstro() {
+        return getVigor() + raca.getVigorBonus();
+    }
+
+    public int getIntelectoTotalMonstro() {
+        return getIntelecto() + raca.getIntelectoBonus();
+    }
+
+    public int getPresencaTotalMonstro() {
+        return getPresenca() + raca.getPresencaBonus();
+    }
+
+
+    }
 
 

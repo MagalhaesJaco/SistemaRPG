@@ -1,5 +1,7 @@
-package org.example.informacoesPersonagem;
+package org.example.atributos;
 
+
+import lombok.Getter;
 
 public enum Raca {
 
@@ -22,10 +24,15 @@ public enum Raca {
     Espirito("Ser etéreo de pura energia", 0, 2, 1, 2, 1);
 
     private final String descricao1;
+    @Getter
     private final Integer forcaBonus;
+    @Getter
     private final Integer agilidadeBonus;
+    @Getter
     private final Integer vigorBonus;
+    @Getter
     private final Integer presencaBonus;
+    @Getter
     private final Integer intelectoBonus;
 
     Raca(String descricao1, Integer forcaBonus,Integer agilidadeBonus,Integer vigorBonus,Integer presencaBonus,Integer intelectoBonus) {
@@ -41,24 +48,6 @@ public enum Raca {
     public String getDescricao() {
         return descricao1;
     }
-    public Integer getForcaBonus() {
-        return forcaBonus;
-    }
 
-    public Integer getAgilidadeBonus() {
-        return agilidadeBonus;
-    }
-
-    public Integer getIntelectoBonus() {
-        return intelectoBonus;
-    }
-
-    public Integer getPresencaBonus() {
-        return presencaBonus;
-    }
-
-    public Integer getVigorBonus() {
-        return vigorBonus;
-    }
 }
 

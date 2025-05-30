@@ -1,7 +1,8 @@
-package org.example.informacoesPersonagem;
+package org.example.atributos;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
-import org.example.model.Dados;
+import org.example.classesSuportes.Dados;
+
 
 @Getter
 public enum ItemDeUso {

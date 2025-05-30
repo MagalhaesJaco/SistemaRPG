@@ -1,7 +1,8 @@
-package org.example.informacoesPersonagem;
+package org.example.personagem;
 
 import lombok.*;
-import org.example.model.*;
+import org.example.atributos.*;
+import org.example.classesSuportes.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Personagem extends Status implements Calculos, Acoes {
+public class Personagem extends Status implements Calculos {
 
     // === Atributos principais === //
     private String nome;
@@ -19,11 +20,9 @@ public class Personagem extends Status implements Calculos, Acoes {
     private Classe classe;
     private ListaHabilidades habilidades;
     private Integer defence;
-
     @Setter(AccessLevel.PUBLIC)
     private Integer vidaMax = null;
     private int vidaAtual;
-
     private Integer manaMax = null;
     private Integer manaAtual;
     private final List<Integer> vidaPorNivel = new ArrayList<>();
@@ -164,8 +163,8 @@ public class Personagem extends Status implements Calculos, Acoes {
          // Aqui você pode usar um campo separado, se tiver controle de vida dinâmica
 
 
-        String barraVida = gerarBarra(getVidaAtual(), getVidaMax(), 20);
-        String barraMana = gerarBarra(manaAtual, getManaMax(), 20);
+        String barraVida = gerarBarra(getVidaAtual(), getVidaMax(), (getVidaMax()*2));
+        String barraMana = gerarBarra(manaAtual, getManaMax(), (getManaMax()*2));
 
 
         return String.format("""
@@ -189,25 +188,5 @@ public class Personagem extends Status implements Calculos, Acoes {
         int preenchido = (int) ((double) atual / max * tamanho);
         int vazio = tamanho - preenchido;
         return "[" + "█".repeat(preenchido) + "░".repeat(vazio) + "]";
-    }
-
-    // === Implementação de Ações === //
-    @Override
-    public void atacar(Personagem alvo) {
-        Integer dano = itemDeUso.getDano();
-        Integer acerto = random.getD20() + getForca();
-        System.out.println("Você rolou: " + acerto + ", esta é a defesa: " + alvo.getDefence());
-        if(acerto > alvo.getDefence()){
-            alvo.setVidaAtual(alvo.getVidaAtual() - dano);
-            System.out.println("Acertou: " + dano + " de dano no alvo!\n");
-        }else{
-            System.out.println("Errou!\n");
-        }
-
-    }
-
-    @Override
-    public Personagem combate() {
-        return new ListaMonstros().monstroAleatorio();
     }
 }

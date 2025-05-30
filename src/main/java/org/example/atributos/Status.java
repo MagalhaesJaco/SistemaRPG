@@ -1,7 +1,7 @@
-package org.example.informacoesPersonagem;
+package org.example.atributos;
 
 import lombok.Data;
-import org.example.model.Combate;
+import org.example.classesSuportes.Combate;
 
 @Data
 public class Status extends Combate {
@@ -71,8 +71,6 @@ public class Status extends Combate {
             this.forca = forca;
         }
     }
-
-    
 
     public void setIntelecto(Integer intelecto) {
         if (podeAtribuir(intelecto)) {
