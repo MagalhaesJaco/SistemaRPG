@@ -1,12 +1,8 @@
 package org.example;
 
+import org.example.atributos.*;
 import org.example.monstro.ListaMonstros;
 import org.example.monstro.Monstro;
-import org.example.atributos.Habilidade;
-import org.example.atributos.ItemDeUso;
-import org.example.atributos.ListaHabilidades;
-import org.example.atributos.Raca;
-import org.example.atributos.Classe;
 import org.example.personagem.*;
 import org.example.classesSuportes.Dados;
 import org.example.personagem.Personagem;
@@ -25,8 +21,8 @@ public class SistemaRPG {
     private static final ListaMonstros Bestiario = new ListaMonstros();
     public static void main(String[] args) throws SQLException {
 
+        System.out.println(ItemDeUsoComBanco.listarTodos().getFirst().getNome());
         ListaMonstros bestiario = new ListaMonstros();
-
         // Habilidades
         ListaHabilidades habilidadesOswaldo = new ListaHabilidades();
         habilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
