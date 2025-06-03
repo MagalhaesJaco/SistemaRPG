@@ -20,16 +20,14 @@ public class SistemaRPG {
     private static final Dados dados = new Dados();
     private static final ListaMonstros Bestiario = new ListaMonstros();
     public static void main(String[] args) throws SQLException {
-
-        System.out.println(ItemDeUsoComBanco.listarTodos().getFirst().getNome());
         ListaMonstros bestiario = new ListaMonstros();
         // Habilidades
         ListaHabilidades habilidadesOswaldo = new ListaHabilidades();
-        habilidadesOswaldo.addHabilidade(Habilidade.BolaDeFogo);
-        habilidadesOswaldo.addHabilidade(Habilidade.ExplorarFraquezas);
+        habilidadesOswaldo.addHabilidade(Habilidade.buscarPorId(1));
+        habilidadesOswaldo.addHabilidade(Habilidade.buscarPorId(7));
 
         ListaHabilidades habilidadesAdalberto = new ListaHabilidades();
-        habilidadesAdalberto.addHabilidade(Habilidade.GolpeFendido);
+        habilidadesAdalberto.addHabilidade(Habilidade.buscarPorId(1));
 
         // Jogadores
         ListaJogadores listaJogadores = new ListaJogadores();
@@ -37,8 +35,8 @@ public class SistemaRPG {
         Personagem oswaldo = new Personagem(
                 1, 3, 1, 3, 1, 1,
                 "Oswaldo",
-                ItemDeUso.GarraDeFera,
-                Raca.Humano,
+                ItemDeUso.buscarItemPorNome("Espada de Madeira"),
+                Raca.buscarRacaPorId(2),
                 Classe.Mago,
                 habilidadesOswaldo
         );
@@ -46,11 +44,12 @@ public class SistemaRPG {
         Personagem adalberto = new Personagem(
                 1, 2, 2, 2, 1, 2,
                 "Adalberto",
-                ItemDeUso.VENENO_DE_ARANHA,
-                Raca.Gnomo,
+                ItemDeUso.buscarItemPorNome("Veneno de aranha"),
+                Raca.buscarRacaPorId(1),
                 Classe.Guerreiro,
                 habilidadesAdalberto
         );
+        System.out.println(habilidadesOswaldo.get(1));
 
         listaJogadores.addPersonagen(oswaldo);
         listaJogadores.addPersonagen(adalberto);
@@ -153,7 +152,7 @@ public class SistemaRPG {
     private static void verFicha(Personagem personagem) {
         System.out.println("======= Ficha do Personagem =======");
         System.out.println("Nome: " + personagem.getNome());
-        System.out.println("Raça: " + personagem.getRaca());
+        System.out.println("Raça: " + personagem.getRaca().getNome());
         System.out.println("Classe: " + personagem.getClasse());
         System.out.println("Item: " + (personagem.getItemDeUso() != null ? personagem.getItemDeUso().getNome() : "Nenhum"));
         System.out.println("Nível: " + personagem.getNivel());
@@ -168,9 +167,9 @@ public class SistemaRPG {
 
         System.out.println("======= Habilidades =========");
 
-        personagem.getHabilidades().getHabilidade().forEach(habilidade -> {
-            System.out.println(" " + habilidade.getNome());
-        });
+        for(Habilidade h: personagem.getHabilidades().getHabilidade())
+            System.out.println(" " + h.getNome());
+
 
         System.out.println("=============================");
     }

@@ -3,41 +3,28 @@ package org.example.atributos;
 
 import lombok.Getter;
 
-public enum Raca {
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-    Gnomo("Bixu piqueno", 0,1,0,0,1),
-    Humano("É apenas um humano... nada de mais...",0,0,1,1,0),
-    Elfo("Ágil e com sentidos aguçados", 0, 2, 0, 1, 0),
-    Anão("Baixo, parrudo e teimoso", 1, 0, 1, 0, 0),
-    Orc("Forte, feroz e impulsivo", 2, 0, 0, 0, 0),
-    Tiefling("Ser de sangue demoníaco, com forte presença e intelecto", 0, 0, 0, 2, 0),
-    MeioDragao("Sangue dracônico corre em suas veias", 0, 1, 0, 1, 0),
-    Sereiano("Habitante das águas, astuto e carismático", 0, 0, 0, 1, 1),
-    Fera("Criatura selvagem e instintiva", 2, 2, 2, 0, 0),
-    MortoVivo("Ser animado pela necromancia", 2, 0, 3, 1, 0),
-    Humanoide("Criatura similar aos humanos", 1, 2, 1, 1, 1),
-    Gigante("Ser colossal de grande força", 4, 0, 2, 0, 0),
-    Insetoide("Criatura artrópode ágil", 1, 3, 2, 0, 0),
-    Draconico("Descendente de dragões", 2, 1, 1, 1, 1),
-    Reptil("Criatura rastejante e venenosa", 2, 3, 1, 0, 0),
-    Construto("Criatura feita de matéria inanimada", 3, 0, 3, 0, 0),
-    Espirito("Ser etéreo de pura energia", 0, 2, 1, 2, 1);
+@Getter
+public class Raca {
 
-    private final String descricao1;
-    @Getter
+    private final  Integer id;
+    private final String nome;
+    private final String descricao;
     private final Integer forcaBonus;
-    @Getter
     private final Integer agilidadeBonus;
-    @Getter
     private final Integer vigorBonus;
-    @Getter
     private final Integer presencaBonus;
-    @Getter
     private final Integer intelectoBonus;
 
-    Raca(String descricao1, Integer forcaBonus,Integer agilidadeBonus,Integer vigorBonus,Integer presencaBonus,Integer intelectoBonus) {
+    private static final String URL = "jdbc:mysql://localhost:3306/sistemarpg";
+    private static final String USUARIO = "root";
+    private static final String SENHA = "1234";
 
-        this.descricao1 = descricao1;
+        Raca(Integer id ,String nome, String descricao, Integer forcaBonus,Integer agilidadeBonus,Integer vigorBonus,Integer presencaBonus,Integer intelectoBonus) {this.nome = nome;this.descricao = descricao;
+        this.id = id;
         this.forcaBonus = forcaBonus;
         this.agilidadeBonus = agilidadeBonus;
         this.vigorBonus = vigorBonus;
@@ -45,9 +32,96 @@ public enum Raca {
         this.intelectoBonus = intelectoBonus;
     }
 
-    public String getDescricao() {
-        return descricao1;
+    public static List<Raca> listarTodasAsRacas() {
+        String sql = "SELECT * FROM raca";
+        List<Raca> racas = new ArrayList<>();
+
+        try (Connection cnn = DriverManager.getConnection(URL, USUARIO, SENHA);
+             PreparedStatement stmt = cnn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("idRaca");
+                String nome = rs.getString("nome_raca");
+                String descricao = rs.getString("descricao_raca");
+                int forca = rs.getInt("forcaBonus_raca");
+                int agilidade = rs.getInt("agilidadeBonus_raca");
+                int vigor = rs.getInt("vigorBonus_raca");
+                int presenca = rs.getInt("presencaBonus_raca");
+                int intelecto = rs.getInt("intelectoBonus_raca");
+
+                racas.add(new Raca(id, nome, descricao, forca, agilidade, vigor, presenca, intelecto));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar raças: " + e.getMessage());
+        }
+
+        return racas;
+    }
+    public static Raca buscarRacaPorId(int idRaca) {
+        String sql = "SELECT * FROM raca WHERE idRaca = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USUARIO, SENHA);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idRaca);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("idRaca");
+                String nome = rs.getString("nome_raca");
+                String descricao = rs.getString("descricao_raca");
+                int forca = rs.getInt("forcaBonus_raca");
+                int agilidade = rs.getInt("agilidadeBonus_raca");
+                int vigor = rs.getInt("vigorBonus_raca");
+                int presenca = rs.getInt("presencaBonus_raca");
+                int intelecto = rs.getInt("intelectoBonus_raca");
+
+                return new Raca(id, nome, descricao, forca, agilidade, vigor, presenca, intelecto);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar raça por ID: " + e.getMessage());
+        }
+
+        return null;
     }
 
+    public static Raca buscarRacaPorNome(String nomeRaca) {
+        String sql = "SELECT * FROM raca WHERE nome_raca = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USUARIO, SENHA);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeRaca);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("idRaca");
+                String nome = rs.getString("nome_raca");
+                String descricao = rs.getString("descricao_raca");
+                int forca = rs.getInt("forcaBonus_raca");
+                int agilidade = rs.getInt("agilidadeBonus_raca");
+                int vigor = rs.getInt("vigorBonus_raca");
+                int presenca = rs.getInt("presencaBonus_raca");
+                int intelecto = rs.getInt("intelectoBonus_raca");
+
+                return new Raca(id, nome, descricao, forca, agilidade, vigor, presenca, intelecto);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar raça por nome: " + e.getMessage());
+        }
+
+        return null;
+    }
+    @Override
+        public String toString() {
+            return "[" + id + "] " + nome + ": " + descricao +
+                    " | FOR: " + forcaBonus + " | AGI: " + agilidadeBonus +
+                    " | VIG: " + vigorBonus + " | PRE: " + presencaBonus +
+                    " | INT: " + intelectoBonus;
+        }
 }
 

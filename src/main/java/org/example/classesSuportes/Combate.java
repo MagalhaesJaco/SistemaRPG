@@ -139,7 +139,7 @@ public abstract class Combate {
         int acerto = dado + atributo;
         int defesa = defensor.getDefence();
 
-        AtomicInteger dano = new AtomicInteger(habilidade.getDano());
+        int dano = habilidade.getDano();
 
         if (habilidade.getAlvo().equalsIgnoreCase("inimigo")) {
             System.out.println(atacante.getNome() + " rolou um D20 (" + dado + ") + Intelecto (" + atributo + ") = " + acerto);
@@ -147,23 +147,23 @@ public abstract class Combate {
 
             if (acerto >= defesa) {
                 if (dado == 20) {
-                    dano.set(2 * dano.get());
+                    dano = (2 * dano);
                 }
-                defensor.setVidaAtual(defensor.getVidaAtual() - dano.get());
+                defensor.setVidaAtual(defensor.getVidaAtual() - dano);
                 System.out.println("💥 Ataque bem-sucedido! " + atacante.getNome() + " causou " + dano + " de dano!\n");
             } else {
                 if (dado == 1) {
-                    atacante.setVidaAtual(atacante.getVidaAtual() - dano.get());
+                    atacante.setVidaAtual(atacante.getVidaAtual() - dano);
                 }
                 System.out.println("❌ Ataque falhou! " + defensor.getNome() + " defendeu com sucesso.\n");
-                dano.set(0);
+                dano = 0;
             }
         } else if (habilidade.getAlvo().equalsIgnoreCase("usuario")) {
-            this.danoExtra = habilidade.efeito();  // ← Aqui o danoExtra será setado
+            this.danoExtra = habilidade.getValorEfeito();  // ← Aqui o danoExtra será setado
             System.out.println("✨ Efeito aplicado ao usuário: " + habilidade.getEfeito());
         }
 
-        return dano.get();
+        return dano;
     }
 
 
@@ -234,6 +234,9 @@ public abstract class Combate {
                         if (inimigo.getVidaAtual() <= 0) {
                             System.out.println("\n🏆 " + inimigo.getNome() + " foi derrotado!");
                             break;
+                        } else {
+                            System.out.println("\n⛑️ Sua reação ao ataque:");
+                            reacao(inimigo, jogador);
                         }
 
                     }
@@ -242,12 +245,12 @@ public abstract class Combate {
                         if (inimigo.getVidaAtual() <= 0) {
                             System.out.println("\n🏆 " + inimigo.getNome() + " foi derrotado!");
                             break;
+                        }else{
+                            System.out.println("\n⛑️ Sua reação ao ataque:");
+                            reacao(inimigo, jogador);
                         }
                     }
                 }
-                System.out.println("\n⛑️ Sua reação ao ataque:");
-                reacao(inimigo, jogador);
-
                 if (jogador.getVidaAtual() <= 0) {
                     System.out.println("\n☠️ " + jogador.getNome() + " foi derrotado!");
                     break;
@@ -260,7 +263,6 @@ public abstract class Combate {
                     defesaExtraTemporaria = 0;
                 }
             }
-
             System.out.println("\n🔚 Combate encerrado!");
         }
     }

@@ -2,45 +2,35 @@ package org.example.atributos;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Getter;
 import org.example.classesSuportes.Dados;
+import org.springframework.data.repository.query.parser.Part;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
-public enum ItemDeUso {
+public class ItemDeUso {
 
-    // Definiçoes de itens ! //
-    EspadaDeMadeira("Espada de Madeira", 4, "normal"),
-    MachadoDeGuerra("Machado de Guerra", 12, "pesada"),
-    CajadoMagico("Cajado Mágico", 8, "normal"),
-    ArcoSimples("Arco Simples", 8, "normal"),
-    AdagaSombria("Adaga Sombria", 6, "leve"),
-    MarteloPesado("Martelo Pesado", 12, "pesada"),
-    LancaDeCaçador("Lança de Caçador", 10, "normal"),
-    LivroDeFeiticos("Livro de Feitiços", 10, "leve"),
-    GarraDeFera("Garra de Fera", 4, "leve"),
-    OSSADA("Ossada", 4, "leve"),
-    FACA_RUSTICA("Faca Rústica", 4, "leve"),
-    PEDRA_GRANDE("Pedra Grande", 6, "pesada"),
-    VENENO_DE_ARANHA("Veneno de Aranha", 4, "leve"),
-    CARNE_PODRE("Carne Podre", 4, "normal"),
-    ESCAMA_DE_DRAGAO("Escama de Dragão", 8, "pesada"),
-    VENENO_CONCENTRADO("Veneno Concentrado", 10, "leve"),
-    FRAGMENTO_DE_PEDRA("Fragmento de Pedra", 4, "normal"),
-    ESSENCIA_SOMBRIA("Essência Sombria", 8, "normal");
-
-
+    // Definiçoes de itens !
     // Definição de atributos !! //
+    private  Integer id;
     private final String nome;
     private Integer dano;
     private String tipo;
 
+    private static final String URL = "jdbc:mysql://localhost:3306/sistemarpg";
+    private static final String USUARIO = "root";
+    private static final String SENHA = "1234";
+
     // Construtor ! //
 
-    ItemDeUso(String nome, Integer dano, String tipo){
+    ItemDeUso(int id, String nome, Integer dano, String tipo){
+        this.id = id;
         this.nome = nome;
         this.dano = rollDamage(dano);
         this.tipo = tipo;
     }
-
     // Gets e sets !! //
     public Integer rollDamage(Integer face){
         Dados roll = new Dados();
@@ -54,4 +44,59 @@ public enum ItemDeUso {
         }
         return dado;
     }
+
+    public static ItemDeUso buscarItemPorNome(String nomeItem) {
+        String sql = "SELECT * FROM item_de_uso WHERE nome_item = ?";
+
+        try (Connection conn = DriverManager.getConnection(URL, USUARIO, SENHA);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeItem); // Define o parâmetro antes de executar
+            ResultSet rs = stmt.executeQuery(); // Executa a consulta
+
+            if (rs.next()) {
+                Integer id = rs.getInt("id_item");
+                String nome = rs.getString("nome_item");
+                int dano = rs.getInt("dano_item");
+                String tipo = rs.getString("tipo_item");
+
+                return new ItemDeUso(id, nome, dano, tipo); // Retorna item encontrado
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar item: " + e.getMessage());
+        }
+
+        return null; // Não encontrado
+    }
+
+    public static List<ItemDeUso> listarTodosItens() {
+        List<ItemDeUso> itens = new ArrayList<>();
+        String sql = "SELECT * FROM item_de_uso";
+
+        try (Connection conn = DriverManager.getConnection(URL, USUARIO, SENHA);
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("Id_item");
+                String nome = rs.getString("nome_item");
+                int dano = rs.getInt("dano_item");
+                String tipo = rs.getString("tipo_item");
+
+                itens.add(new ItemDeUso(id, nome, dano, tipo));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar itens: " + e.getMessage());
+        }
+
+        return itens;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + id + "] " + nome + " | Dano: " + dano + " | Tipo: " + tipo;
+    }
+
 }
