@@ -8,11 +8,11 @@ import org.example.atributos.Status;
 import org.example.atributos.Classe;
 import org.example.personagem.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Monstro extends Personagem {
 
@@ -28,22 +28,17 @@ public class Monstro extends Personagem {
     private Integer manaMax = 0;
     private final List<Integer> vidaPorNivel = new ArrayList<>();
 
-    public Monstro() {
+    public Monstro() throws SQLException {
     }
 
-    public Monstro(Integer nivel, Integer forca, Integer agilidade, Integer vigor, Integer intelecto, Integer presenca, String nome, ItemDeUso itemDeUso, Raca raca) {
+    public Monstro(String nome, ItemDeUso itemDeUso, Raca raca) throws SQLException {
         setNome(nome);
         setRaca(raca);
         setItemDeUso(itemDeUso);
         setNivel(10);
-        setForca(forca);
-        setAgilidade(agilidade);
-        setVigor(vigor);
-        setIntelecto(intelecto);
-        setPresenca(presenca);
         setVidaMax(calculoVidaMax());
         setVidaAtual(vidaMax);
-        setDefence((vigor) + 10);
+        setDefence((2) + 10);
 
     }
 
@@ -57,7 +52,7 @@ public class Monstro extends Personagem {
         String barraVida = gerarBarra(getVidaAtual(), getVidaMax(), 20);
 
         return String.format("""
-                        ===== Personagem =====
+                        ===== Monstro =====
                         Nome: %s
                         vida: %d/%d %s
                         Raça: %s
@@ -66,7 +61,7 @@ public class Monstro extends Personagem {
                         """,
                 nome,
                 getVidaAtual(), getVidaMax(), barraVida,
-                raca,
+                raca.getNome(),
                 itemDeUso != null ? itemDeUso.getNome() : "Nenhum"
         );
     }

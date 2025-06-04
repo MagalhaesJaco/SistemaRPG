@@ -23,24 +23,24 @@ public class ListaMonstros {
     @Getter
     private Monstro[] listaMonstros = {
 
-            new Monstro(1, 2, 3, 3, 1, 3, "Lobo", ItemDeUso.buscarItemPorNome("Garra De Fera"), Raca.buscarRacaPorId(14)),
-            new Monstro(1, 3, 2, 4, 1, 2, "Zumbi", ItemDeUso.buscarItemPorNome("Mãos vazias"), Raca.buscarRacaPorId(15)),
-            new Monstro(1, 2, 3, 2, 3, 2, "Goblin", ItemDeUso.buscarItemPorNome("Faca Rústica"), Raca.buscarRacaPorId(16)),
+            new Monstro( "Lobo", ItemDeUso.buscarItemPorNome("Garra De Fera"), Raca.buscarRacaPorId(14)),
+            new Monstro( "Zumbi", ItemDeUso.buscarItemPorNome("Mãos vazias"), Raca.buscarRacaPorId(15)),
+            new Monstro( "Goblin", ItemDeUso.buscarItemPorNome("Faca Rústica"), Raca.buscarRacaPorId(16)),
 
-            new Monstro(2, 2, 5, 2, 2, 4, "Aranha Gigante", ItemDeUso.buscarItemPorNome("Presas Venenosas"), Raca.buscarRacaPorId(18)),
-            new Monstro(2, 4, 4, 2, 3, 2, "Serpente", ItemDeUso.buscarItemPorNome("Presas venenosas"), Raca.buscarRacaPorId(20)),
-            new Monstro(2, 5, 3, 3, 2, 2, "Colosso esqueleto", ItemDeUso.buscarItemPorNome("Clava de ossos"), Raca.buscarRacaPorId(15)),
+            new Monstro( "Aranha Gigante", ItemDeUso.buscarItemPorNome("Presas Venenosas"), Raca.buscarRacaPorId(18)),
+            new Monstro( "Serpente", ItemDeUso.buscarItemPorNome("Presas venenosas"), Raca.buscarRacaPorId(20)),
+            new Monstro( "Colosso esqueleto", ItemDeUso.buscarItemPorNome("Clava de ossos"), Raca.buscarRacaPorId(15)),
 
-            new Monstro(3, 2, 5, 2, 3, 5, "Espectro", ItemDeUso.buscarItemPorNome("Essência Sombria"), Raca.buscarRacaPorId(22)),
-            new Monstro(3, 6, 3, 4, 1, 3, "Ogro", ItemDeUso.buscarItemPorNome("Clava pesada"), Raca.buscarRacaPorId(17)),
+            new Monstro( "Espectro", ItemDeUso.buscarItemPorNome("Essência Sombria"), Raca.buscarRacaPorId(22)),
+            new Monstro( "Ogro", ItemDeUso.buscarItemPorNome("Clava pesada"), Raca.buscarRacaPorId(17)),
 
-            new Monstro(4, 7, 1, 7, 1, 3, "Golem de Pedra", ItemDeUso.buscarItemPorNome("Punhos de Pedra"), Raca.buscarRacaPorId(21)),
+            new Monstro( "Golem de Pedra", ItemDeUso.buscarItemPorNome("Punhos de Pedra"), Raca.buscarRacaPorId(21)),
 
-            new Monstro(5, 4, 5, 4, 4, 4, "Dragão Filhote", ItemDeUso.buscarItemPorNome("Garra de Dragão"), Raca.buscarRacaPorId(19))
+            new Monstro( "Dragão Filhote", ItemDeUso.buscarItemPorNome("Garra de Dragão"), Raca.buscarRacaPorId(19))
     };
 
 
-    public ListaMonstros (){};
+    public ListaMonstros () throws SQLException {};
     public Monstro monstroAleatorio(){
         int posicaoAletoria = aleatorio.nextInt(listaMonstros.length);
         return listaMonstros[posicaoAletoria];

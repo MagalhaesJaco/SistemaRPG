@@ -18,10 +18,26 @@ import java.util.Scanner;
 public class SistemaRPG {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Dados dados = new Dados();
-    private static final ListaMonstros Bestiario = new ListaMonstros();
+    private static final ListaMonstros Bestiario;
+    private static final Status status;
+
+    static {
+        try {
+            status = new Status();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Bestiario = new ListaMonstros();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) throws SQLException {
         ListaMonstros bestiario = new ListaMonstros();
         // Habilidades
+
         ListaHabilidades habilidadesOswaldo = new ListaHabilidades();
         habilidadesOswaldo.addHabilidade(Habilidade.buscarPorId(1));
         habilidadesOswaldo.addHabilidade(Habilidade.buscarPorId(7));
@@ -31,26 +47,23 @@ public class SistemaRPG {
 
         // Jogadores
         ListaJogadores listaJogadores = new ListaJogadores();
-
+        System.out.println(status.buscarPorId(1));
         Personagem oswaldo = new Personagem(
-                1, 3, 1, 3, 1, 1,
+                status.buscarPorId(1),
                 "Oswaldo",
                 ItemDeUso.buscarItemPorNome("Espada de Madeira"),
                 Raca.buscarRacaPorId(2),
-                Classe.Mago,
+                Classe.buscarPorNome("Mago"),
                 habilidadesOswaldo
         );
 
-        Personagem adalberto = new Personagem(
-                1, 2, 2, 2, 1, 2,
+        Personagem adalberto = new Personagem(status.buscarPorId(1),
                 "Adalberto",
                 ItemDeUso.buscarItemPorNome("Veneno de aranha"),
                 Raca.buscarRacaPorId(1),
-                Classe.Guerreiro,
+                Classe.buscarPorNome("Guerreiro"),
                 habilidadesAdalberto
         );
-        System.out.println(habilidadesOswaldo.get(1));
-
         listaJogadores.addPersonagen(oswaldo);
         listaJogadores.addPersonagen(adalberto);
 
@@ -153,7 +166,7 @@ public class SistemaRPG {
         System.out.println("======= Ficha do Personagem =======");
         System.out.println("Nome: " + personagem.getNome());
         System.out.println("Raça: " + personagem.getRaca().getNome());
-        System.out.println("Classe: " + personagem.getClasse());
+        System.out.println("Classe: " + personagem.getClasse().getNome());
         System.out.println("Item: " + (personagem.getItemDeUso() != null ? personagem.getItemDeUso().getNome() : "Nenhum"));
         System.out.println("Nível: " + personagem.getNivel());
         System.out.println("Vida: " + personagem.getVidaAtual() + "/" + personagem.getVidaMax());

@@ -4,16 +4,16 @@ import lombok.*;
 import org.example.atributos.*;
 import org.example.classesSuportes.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class Personagem extends Status implements Calculos {
 
     // === Atributos principais === //
+    private Status status;
     private String nome;
     private Raca raca;
     private ItemDeUso itemDeUso;
@@ -28,28 +28,26 @@ public class Personagem extends Status implements Calculos {
     private final List<Integer> vidaPorNivel = new ArrayList<>();
 
     // === Construtor customizado === //
-    public Personagem(Integer nivel, Integer forca, Integer agilidade, Integer vigor,
-                      Integer intelecto, Integer presenca, String nome,
-                      ItemDeUso itemDeUso, Raca raca, Classe classe,
-                      ListaHabilidades habilidade) {
+    public Personagem(Status status,String nome, ItemDeUso itemDeUso, Raca raca, Classe classe, ListaHabilidades habilidade) throws SQLException {
+        super();
+        setStatus(status);
+        setStatusTotal(getStatusTotal());
         setNome(nome);
         setRaca(raca);
         setClasse(classe);
         setItemDeUso(itemDeUso);
-        setNivel(nivel);
+
         setHabilidades(habilidade);
-        setForca(forca);
-        setAgilidade(agilidade);
-        setVigor(vigor);
-        setIntelecto(intelecto);
-        setPresenca(presenca);
+
+
         setVidaMax(calculoVidaMax());
         setManaMax(calculoManaMax());
         setVidaAtual(vidaMax);
         setManaAtual(manaMax);
-        setDefence((vigor/2) + 10);
     }
 
+    public Personagem() throws SQLException {
+    }
     protected void setHabilidades(ListaHabilidades habilidade) {
         this.habilidades =  habilidade;
     }
@@ -65,14 +63,13 @@ public class Personagem extends Status implements Calculos {
         int bonusRaca = raca.getVigorBonus();
         int vidaAdicional = vidaPorNivel.stream().mapToInt(Integer::intValue).sum();
 
-        int base = switch (classe) {
-            case Mago, Feiticeiro -> 6;
-            case Guerreiro, Paladino -> 10;
-            case Arqueiro, Ladino, Druida -> 8;
-            case Barbaro -> 12;
-            case Selvagem -> 10;
-            case Brutalmente -> 14;
-            case Tanque -> 14;
+        int base = switch (classe.getNome()) {
+            case "Mago","Feiticeiro" -> 6;
+            case "Guerreiro", "Paladino", "Selvagem" -> 10;
+            case "Arqueiro", "Ladino", "Druida" -> 8;
+            case "Barbaro" -> 12;
+            case "Brutalmente", "Tanque" -> 14;
+            default -> throw new IllegalStateException("Unexpected value: " + classe.getNome());
         };
 
         vidaMax = vigor + bonusClasse + bonusRaca + base;
@@ -86,14 +83,13 @@ public class Personagem extends Status implements Calculos {
         int bonusClasse = classe.getIntelectoBonus();
         int bonusRaca = raca.getIntelectoBonus();
 
-        int base = switch (classe) {
-            case Mago, Feiticeiro -> 6;
-            case Guerreiro, Paladino -> 10;
-            case Arqueiro, Ladino, Druida -> 8;
-            case Barbaro -> 12;
-            case Selvagem -> 10;
-            case Brutalmente -> 12;
-            case Tanque -> 12;
+        int base = switch (classe.getNome()) {
+            case "Mago","Feiticeiro" -> 6;
+            case "Guerreiro", "Paladino", "Selvagem" -> 10;
+            case "Arqueiro", "Ladino", "Druida" -> 8;
+            case "Barbaro" -> 12;
+            case "Brutalmente", "Tanque" -> 14;
+            default -> throw new IllegalStateException("Unexpected value: " + classe.getNome());
         };
 
         manaMax = intelecto + bonusClasse + bonusRaca + base;
@@ -105,12 +101,13 @@ public class Personagem extends Status implements Calculos {
         int rolagensNecessarias = nivel - 1;
 
         while (vidaPorNivel.size() < rolagensNecessarias) {
-            int dado = switch (classe) {
-                case Mago, Feiticeiro -> random.getD6();
-                case Druida, Ladino, Arqueiro -> random.getD8();
-                case Guerreiro, Paladino -> random.getD10();
-                case Barbaro, Brutalmente, Tanque -> random.getD12();
-                case Selvagem -> random.getD10();
+            int dado = switch (classe.getNome()) {
+                case "Mago", "Feiticeiro" -> random.getD6();
+                case "Druida", "Ladino", "Arqueiro" -> random.getD8();
+                case "Guerreiro", "Paladino" -> random.getD10();
+                case "Barbaro", "Brutalmente", "Tanque" -> random.getD12();
+                case "Selvagem" -> random.getD10();
+                default -> throw new IllegalStateException("Unexpected value: " + classe.getNome());
             };
             vidaPorNivel.add(dado);
         }
@@ -154,8 +151,6 @@ public class Personagem extends Status implements Calculos {
         return getPresenca() + classe.getPresencaBonus() + raca.getPresencaBonus();
     }
 
-
-
     public String getResumoPersonagem() {
         if (vidaMax == null) calculoVidaMax();
         if (manaMax == null) calculoManaMax();
@@ -180,7 +175,7 @@ public class Personagem extends Status implements Calculos {
                 nome,
                 getVidaAtual(), getVidaMax(), barraVida,
                 manaAtual, getManaMax(), barraMana,
-                classe, raca,
+                classe.getNome(), raca.getNome(),
                 itemDeUso != null ? itemDeUso.getNome() : "Nenhum"
         );
     }
